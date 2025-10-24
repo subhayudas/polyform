@@ -1,0 +1,163 @@
+
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+
+interface FileUploadFormProps {
+  file: File;
+  material: string;
+  quantity: number;
+  pricing: any;
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+const FileUploadForm: React.FC<FileUploadFormProps> = ({ 
+  file, 
+  material, 
+  quantity, 
+  pricing, 
+  onSuccess, 
+  onCancel 
+}) => {
+  const [notes, setNotes] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  const { user } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "Please log in to submit an order.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Insert order into database with pricing information
+      const { error } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user.id,
+          file_name: file.name,
+          material,
+          quantity,
+          notes,
+          price: pricing.total,
+          estimated_delivery: pricing.estimatedDelivery.toISOString().split('T')[0],
+          status: 'pending'
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Order submitted successfully!",
+        description: `Your order for ${quantity}x ${file.name} has been submitted with instant pricing of $${pricing.total.toFixed(2)}.`,
+      });
+
+      onSuccess();
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit order. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Confirm Your Order</CardTitle>
+        <CardDescription>
+          Review your order details and add any special instructions
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Order Summary */}
+          <div className="bg-gray-50 rounded-lg p-4 space-y-2">
+            <h4 className="font-medium text-gray-900">Order Summary</h4>
+            <div className="text-sm space-y-1">
+              <div className="flex justify-between">
+                <span>File:</span>
+                <span className="font-medium">{file.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Material:</span>
+                <span className="font-medium">{material}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Quantity:</span>
+                <span className="font-medium">{quantity}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Estimated Weight:</span>
+                <span className="font-medium">{pricing.weight.toFixed(0)}g</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Estimated Print Time:</span>
+                <span className="font-medium">{pricing.estimatedTime.toFixed(1)}h</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Estimated Delivery:</span>
+                <span className="font-medium">
+                  {pricing.estimatedDelivery.toLocaleDateString()}
+                </span>
+              </div>
+              <div className="border-t pt-2 flex justify-between font-semibold">
+                <span>Total Price:</span>
+                <span className="text-polyform-green-600">${pricing.total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="notes">Additional Notes (Optional)</Label>
+            <Textarea
+              id="notes"
+              placeholder="Any special requirements, color preferences, finishing instructions, or other notes..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={4}
+            />
+          </div>
+
+          <div className="flex gap-4 justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              disabled={isSubmitting}
+            >
+              Back to Pricing
+            </Button>
+            <Button
+              type="submit"
+              className="bg-polyform-green-600 hover:bg-polyform-green-700"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting Order...' : `Submit Order - $${pricing.total.toFixed(2)}`}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default FileUploadForm;
