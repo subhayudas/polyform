@@ -85,15 +85,21 @@ const AuthForm = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`
+          redirectTo: `${window.location.origin}/auth`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
         }
       });
 
       if (error) {
+        console.error('OAuth error:', error);
         setError(error.message);
       }
     } catch (err) {
-      setError('An unexpected error occurred');
+      console.error('OAuth exception:', err);
+      setError('An unexpected error occurred during authentication');
     } finally {
       setOauthLoading(null);
     }
