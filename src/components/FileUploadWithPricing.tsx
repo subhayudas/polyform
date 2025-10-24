@@ -8,6 +8,8 @@ import FileSelector from './FileSelector';
 import SuccessMessage from './SuccessMessage';
 import InstantPricing from './InstantPricing';
 import FileUploadForm from './FileUploadForm';
+import SimpleFileUploadForm from './SimpleFileUploadForm';
+import DirectOrderSubmission from './DirectOrderSubmission';
 
 const FileUploadWithPricing = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -140,7 +142,7 @@ const FileUploadWithPricing = () => {
 
   if (showForm && selectedFile && material && pricing) {
     return (
-      <FileUploadForm
+      <DirectOrderSubmission
         file={selectedFile}
         material={material}
         quantity={quantity}

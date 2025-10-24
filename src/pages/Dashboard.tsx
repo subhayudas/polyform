@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import AdminPanel from '@/components/AdminPanel';
 import DashboardStats from '@/components/DashboardStats';
 import OrdersTable from '@/components/OrdersTable';
+import EnhancedOrdersTable from '@/components/EnhancedOrdersTable';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import AIChatbot from '@/components/AIChatbot';
 import { Button } from '@/components/ui/button';
@@ -55,12 +56,19 @@ const Dashboard = () => {
 
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
           {userRole === 'admin' ? (
-            <AdminPanel />
+            <>
+              <AdminPanel />
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">All Orders</h2>
+                <EnhancedOrdersTable orders={orders} isLoading={isLoading} />
+              </div>
+            </>
           ) : (
             <>
               <DashboardStats summary={summary} />
-              <OrdersTable orders={orders} isLoading={isLoading} />
+              <EnhancedOrdersTable orders={orders} isLoading={isLoading} />
             </>
           )}
         </div>

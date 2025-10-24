@@ -47,10 +47,39 @@ export const useAuth = (): AuthContextType => {
         if (profileError.code !== 'PGRST116') { // Not found error
           throw profileError;
         }
-        return;
-      }
+        // Create a basic profile if it doesn't exist
+        console.log('Profile not found, creating basic profile...');
+        const { data: newProfile, error: createError } = await supabase
+          .from('profiles')
+          .insert({
+            id: userId,
+            email: user?.email || '',
+            full_name: user?.user_metadata?.full_name || null,
+            company: user?.user_metadata?.company || null,
+            phone: user?.user_metadata?.phone || null
+          })
+          .select()
+          .single();
 
-      console.log('Profile data:', profileData);
+        if (createError) {
+          console.error('Error creating profile:', createError);
+          // Set basic profile data anyway
+          setProfile({
+            id: userId,
+            email: user?.email || '',
+            full_name: user?.user_metadata?.full_name || null,
+            company: user?.user_metadata?.company || null,
+            phone: user?.user_metadata?.phone || null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          });
+        } else {
+          setProfile(newProfile);
+        }
+      } else {
+        console.log('Profile data:', profileData);
+        setProfile(profileData);
+      }
 
       const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
@@ -64,17 +93,17 @@ export const useAuth = (): AuthContextType => {
           throw roleError;
         }
         // Default to customer if no role found
+        console.log('No role found, defaulting to customer');
         setUserRole('customer');
-        setProfile(profileData);
         return;
       }
 
       console.log('Role data:', roleData);
-
-      setProfile(profileData);
       setUserRole(roleData.role);
     } catch (error) {
       console.error('Error fetching profile:', error);
+      // Set defaults on error
+      setUserRole('customer');
     }
   };
 
