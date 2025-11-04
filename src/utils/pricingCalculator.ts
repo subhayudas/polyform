@@ -1,5 +1,4 @@
-
-interface PricingFactors {
+export interface PricingFactors {
   volume: number; // in cubic mm
   surfaceArea: number; // in square mm
   complexity: number; // 1-5 scale
@@ -14,6 +13,54 @@ interface MaterialPricing {
     setupCost: number;
     complexityMultiplier: number;
   };
+}
+
+export interface MaterialPricingData {
+  cost_per_unit: number;
+  density: number;
+  setup_cost: number;
+  name?: string;
+}
+
+export interface SurfaceFinishData {
+  cost_multiplier: number;
+  name?: string;
+}
+
+export interface PartMarkingData {
+  cost_multiplier: number;
+  name?: string;
+}
+
+export interface InspectionData {
+  has_extra_fee: boolean;
+  name?: string;
+}
+
+export interface PricingOptions {
+  manufacturingProcess?: string;
+  materialType?: string;
+  materialVariant?: string;
+  materialName?: string;
+  quantity: number;
+  surfaceFinish?: boolean;
+  surfaceFinishId?: string;
+  tighterTolerance?: boolean;
+  hasThreads?: boolean;
+  hasInserts?: boolean;
+  hasAssembly?: boolean;
+  assemblyType?: string;
+  finishedAppearance?: 'standard' | 'premium';
+  partMarking?: boolean;
+  partMarkingId?: string;
+  inspectionType?: boolean;
+  inspectionId?: string;
+  itarCompliance?: boolean;
+  // Database pricing data
+  materialPricing?: MaterialPricingData;
+  surfaceFinishPricing?: SurfaceFinishData;
+  partMarkingPricing?: PartMarkingData;
+  inspectionPricing?: InspectionData;
 }
 
 const MATERIAL_PRICING: MaterialPricing = {
@@ -198,4 +245,285 @@ export const formatEstimatedDelivery = (estimatedTime: number): Date => {
   }
   
   return deliveryDate;
+};
+
+// Calculate price range for manufacturing order
+export const calculatePriceRange = (
+  files: File[],
+  options: PricingOptions
+): {
+  minPrice: number;
+  maxPrice: number;
+  estimatedPrice: number;
+  breakdown: {
+    materialCost: { min: number; max: number; estimated: number };
+    laborCost: { min: number; max: number; estimated: number };
+    setupCost: number;
+    additionalCosts: { min: number; max: number; estimated: number };
+  };
+  estimatedTime: number;
+  estimatedDelivery: Date;
+} => {
+  if (files.length === 0) {
+    return {
+      minPrice: 0,
+      maxPrice: 0,
+      estimatedPrice: 0,
+      breakdown: {
+        materialCost: { min: 0, max: 0, estimated: 0 },
+        laborCost: { min: 0, max: 0, estimated: 0 },
+        setupCost: 0,
+        additionalCosts: { min: 0, max: 0, estimated: 0 },
+      },
+      estimatedTime: 0,
+      estimatedDelivery: new Date(),
+    };
+  }
+
+  // Estimate properties for all files combined
+  let totalVolume = 0;
+  let totalSurfaceArea = 0;
+  let maxComplexity = 1;
+  let anySupportRequired = false;
+  let totalFileSizeKB = 0;
+
+  files.forEach((file) => {
+    const props = estimateFileProperties(file);
+    totalVolume += props.volume;
+    totalSurfaceArea += props.surfaceArea;
+    maxComplexity = Math.max(maxComplexity, props.complexity);
+    if (props.supportRequired) anySupportRequired = true;
+    totalFileSizeKB += file.size / 1024;
+  });
+
+  const avgVolume = totalVolume / files.length;
+  const avgComplexity = maxComplexity;
+
+  // Get material pricing - use database data if available, otherwise fallback to hardcoded
+  let materialData: {
+    costPerGram: number;
+    density: number;
+    setupCost: number;
+    complexityMultiplier: number;
+  };
+
+  if (options.materialPricing) {
+    // Use database pricing data
+    materialData = {
+      costPerGram: options.materialPricing.cost_per_unit,
+      density: options.materialPricing.density,
+      setupCost: options.materialPricing.setup_cost,
+      complexityMultiplier: 1.0, // Default, can be adjusted based on material
+    };
+  } else {
+    // Fallback to hardcoded pricing
+    const materialName = options.materialVariant || options.materialName || options.materialType || 'PLA';
+    
+    // Try to find matching material (handle partial matches)
+    let matchedMaterial = MATERIAL_PRICING[materialName];
+    if (!matchedMaterial) {
+      // Try to find by partial match (e.g., "PLA - White" matches "PLA")
+      const materialKeys = Object.keys(MATERIAL_PRICING);
+      const matchedKey = materialKeys.find(key => 
+        materialName.toUpperCase().includes(key.toUpperCase()) || 
+        key.toUpperCase().includes(materialName.toUpperCase())
+      );
+      matchedMaterial = matchedKey ? MATERIAL_PRICING[matchedKey] : MATERIAL_PRICING['PLA'];
+    }
+    materialData = matchedMaterial;
+  }
+
+  // Calculate base costs
+  const volumeCm3 = avgVolume / 1000;
+  const effectiveVolume = volumeCm3 * 0.2; // 20% infill default
+  const weight = effectiveVolume * materialData.density;
+
+  // Material cost with uncertainty range
+  const baseMaterialCost = weight * materialData.costPerGram;
+  const materialCostMin = baseMaterialCost * 0.8; // -20% uncertainty
+  const materialCostMax = baseMaterialCost * 1.3; // +30% uncertainty
+
+  // Setup cost (one-time per order)
+  const setupCost = materialData.setupCost;
+
+  // Labor cost estimation
+  const baseTime = volumeCm3 * 0.5; // hours
+  const complexityMultiplier = 1 + (avgComplexity - 1) * 0.3;
+  const supportMultiplier = anySupportRequired ? 1.5 : 1;
+  const estimatedTime = baseTime * complexityMultiplier * supportMultiplier * options.quantity;
+
+  // Labor cost with uncertainty
+  const laborRate = 15; // $/hour
+  const baseLaborCost = estimatedTime * laborRate;
+  const laborCostMin = baseLaborCost * 0.7; // -30% uncertainty
+  const laborCostMax = baseLaborCost * 1.4; // +40% uncertainty
+
+  // Calculate base price for percentage-based calculations (single item)
+  const basePricePerItem = baseMaterialCost + baseLaborCost + setupCost;
+
+  // Additional costs based on options
+  let additionalCosts = 0;
+  let additionalCostsMin = 0;
+  let additionalCostsMax = 0;
+
+  // Tighter tolerance
+  if (options.tighterTolerance) {
+    additionalCosts += 10;
+    additionalCostsMin += 7;
+    additionalCostsMax += 15;
+  }
+
+  // Threads
+  if (options.hasThreads) {
+    additionalCosts += 8;
+    additionalCostsMin += 5;
+    additionalCostsMax += 12;
+  }
+
+  // Inserts
+  if (options.hasInserts) {
+    additionalCosts += 12;
+    additionalCostsMin += 8;
+    additionalCostsMax += 18;
+  }
+
+  // Assembly
+  if (options.hasAssembly) {
+    if (options.assemblyType === 'assembly_test') {
+      additionalCosts += 20;
+      additionalCostsMin += 15;
+      additionalCostsMax += 30;
+    } else if (options.assemblyType === 'ship_in_assembly') {
+      additionalCosts += 30;
+      additionalCostsMin += 20;
+      additionalCostsMax += 45;
+    }
+  }
+
+  // Premium appearance
+  if (options.finishedAppearance === 'premium') {
+    additionalCosts += 15;
+    additionalCostsMin += 10;
+    additionalCostsMax += 25;
+  }
+
+  // Surface finish premium - use database multiplier if available
+  if (options.surfaceFinish) {
+    if (options.surfaceFinishPricing) {
+      // Apply cost multiplier from database (e.g., 1.2 = 20% increase)
+      const baseFinishCost = basePricePerItem * 0.05; // 5% of base price
+      const multiplier = options.surfaceFinishPricing.cost_multiplier;
+      const finishCost = baseFinishCost * (multiplier - 1.0); // Only the additional cost
+      additionalCosts += finishCost;
+      additionalCostsMin += finishCost * 0.8;
+      additionalCostsMax += finishCost * 1.3;
+    } else {
+      // Fallback to fixed cost
+      additionalCosts += 5;
+      additionalCostsMin += 3;
+      additionalCostsMax += 8;
+    }
+  }
+
+  // Part marking - use database multiplier if available
+  if (options.partMarking) {
+    if (options.partMarkingPricing) {
+      // Apply cost multiplier from database
+      const baseMarkingCost = basePricePerItem * 0.03; // 3% of base price
+      const multiplier = options.partMarkingPricing.cost_multiplier;
+      const markingCost = baseMarkingCost * (multiplier - 1.0); // Only the additional cost
+      additionalCosts += markingCost;
+      additionalCostsMin += markingCost * 0.8;
+      additionalCostsMax += markingCost * 1.3;
+    } else {
+      // Fallback to fixed cost
+      additionalCosts += 5;
+      additionalCostsMin += 3;
+      additionalCostsMax += 8;
+    }
+  }
+
+  // Inspection - use database extra fee if available
+  if (options.inspectionType) {
+    if (options.inspectionPricing) {
+      if (options.inspectionPricing.has_extra_fee) {
+        // Inspection with extra fee - typically more expensive
+        additionalCosts += 15;
+        additionalCostsMin += 10;
+        additionalCostsMax += 25;
+      } else {
+        // Standard inspection without extra fee
+        additionalCosts += 5;
+        additionalCostsMin += 3;
+        additionalCostsMax += 8;
+      }
+    } else {
+      // Fallback to fixed cost
+      additionalCosts += 10;
+      additionalCostsMin += 7;
+      additionalCostsMax += 15;
+    }
+  }
+
+  // ITAR compliance
+  if (options.itarCompliance) {
+    additionalCosts += 20;
+    additionalCostsMin += 15;
+    additionalCostsMax += 30;
+  }
+
+  // Apply quantity discounts
+  let quantityMultiplier = 1;
+  if (options.quantity >= 10) {
+    quantityMultiplier = 0.85; // 15% discount
+  } else if (options.quantity >= 5) {
+    quantityMultiplier = 0.9; // 10% discount
+  }
+
+  // Calculate totals (with quantity)
+  const materialCostTotal = baseMaterialCost * options.quantity;
+  const materialCostMinTotal = materialCostMin * options.quantity * quantityMultiplier;
+  const materialCostMaxTotal = materialCostMax * options.quantity * quantityMultiplier;
+
+  const laborCostTotal = baseLaborCost * quantityMultiplier;
+  const laborCostMinTotal = laborCostMin * quantityMultiplier;
+  const laborCostMaxTotal = laborCostMax * quantityMultiplier;
+
+  const additionalCostsTotal = additionalCosts * options.quantity;
+  const additionalCostsMinTotal = additionalCostsMin * options.quantity;
+  const additionalCostsMaxTotal = additionalCostsMax * options.quantity;
+
+  // Calculate price range
+  const estimatedPrice = (materialCostTotal + laborCostTotal + setupCost + additionalCostsTotal) * quantityMultiplier;
+  const minPrice = materialCostMinTotal + laborCostMinTotal + setupCost + additionalCostsMinTotal;
+  const maxPrice = materialCostMaxTotal + laborCostMaxTotal + setupCost + additionalCostsMaxTotal;
+
+  // Calculate delivery date
+  const estimatedDelivery = formatEstimatedDelivery(estimatedTime);
+
+  return {
+    minPrice: Math.max(0, minPrice),
+    maxPrice: Math.max(0, maxPrice),
+    estimatedPrice: Math.max(0, estimatedPrice),
+    breakdown: {
+      materialCost: {
+        min: materialCostMinTotal,
+        max: materialCostMaxTotal,
+        estimated: materialCostTotal * quantityMultiplier,
+      },
+      laborCost: {
+        min: laborCostMinTotal,
+        max: laborCostMaxTotal,
+        estimated: laborCostTotal,
+      },
+      setupCost,
+      additionalCosts: {
+        min: additionalCostsMinTotal,
+        max: additionalCostsMaxTotal,
+        estimated: additionalCostsTotal * quantityMultiplier,
+      },
+    },
+    estimatedTime,
+    estimatedDelivery,
+  };
 };

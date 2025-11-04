@@ -26,6 +26,7 @@ import LaserEngraving from "./pages/LaserEngraving";
 import ManufacturingSolutions from "./pages/ManufacturingSolutions";
 import CNCMachining from "./pages/CNCMachining";
 import SheetMetalFabrication from "./pages/SheetMetalFabrication";
+import DatabaseSetup from "./pages/DatabaseSetup";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -56,6 +57,7 @@ const App = () => (
             <Route path="/manufacturing-solutions" element={<ManufacturingSolutions />} />
             <Route path="/cnc-machining" element={<CNCMachining />} />
             <Route path="/sheet-metal-fabrication" element={<SheetMetalFabrication />} />
+            <Route path="/database-setup" element={<DatabaseSetup />} />
             <Route 
               path="/dashboard" 
               element={

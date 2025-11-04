@@ -101,19 +101,20 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
 
         {/* Main Heading */}
         <motion.h1
-          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-none tracking-tight"
+          className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white mb-8 leading-none tracking-tight"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <motion.span
-            className="block font-light text-white/90 text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-2 tracking-wider"
+            className="block font-light text-white/90 text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-3 tracking-wider"
             style={{
               background: "linear-gradient(135deg, #ffffff 0%, #06b6d4 30%, #f97316 70%, #ffffff 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
               filter: "url(#text-glow)",
+              backgroundSize: "200% 200%",
             }}
             animate={{
               backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
@@ -126,13 +127,13 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           >
             Connect with
           </motion.span>
-          <span className="block font-black text-white drop-shadow-2xl">Certified Vendors</span>
-          <span className="block font-light text-white/80 italic">Intelligently</span>
+          <span className="block font-black text-white drop-shadow-2xl mb-2">Certified Vendors</span>
+          <span className="block font-light text-white/80 italic text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Intelligently</span>
         </motion.h1>
 
         {/* Description */}
         <motion.p
-          className="text-lg md:text-xl text-white/70 mb-8 max-w-xl leading-relaxed mx-auto lg:mx-0"
+          className="text-lg md:text-xl lg:text-2xl text-white/80 mb-10 max-w-2xl leading-relaxed mx-auto lg:mx-0 font-light"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
@@ -149,23 +150,23 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           transition={{ duration: 0.6, delay: 1.0 }}
         >
           <motion.button
-            className="px-10 py-4 rounded-full bg-gradient-to-r from-cyan-500 to-orange-500 text-white font-semibold text-sm transition-all duration-300 hover:from-cyan-400 hover:to-orange-400 cursor-pointer shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-            whileHover={{ scale: 1.05 }}
+            className="px-12 py-5 rounded-full bg-gradient-to-r from-cyan-500 to-orange-500 text-white font-semibold text-base transition-all duration-300 hover:from-cyan-400 hover:to-orange-400 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-cyan-500/50 flex items-center justify-center gap-3 group"
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={onUploadClick}
           >
-            <Upload className="w-5 h-5" />
+            <Upload className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
             Upload RFQ
           </motion.button>
           
           <motion.button
-            className="px-10 py-4 rounded-full bg-transparent border-2 border-white/30 text-white font-medium text-sm transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:text-cyan-100 cursor-pointer backdrop-blur-sm flex items-center justify-center gap-2"
-            whileHover={{ scale: 1.05 }}
+            className="px-12 py-5 rounded-full bg-transparent border-2 border-white/30 text-white font-medium text-base transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:text-cyan-100 cursor-pointer backdrop-blur-md flex items-center justify-center gap-3 group"
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             asChild
           >
             <Link to="/services">
-              <BookOpen className="w-5 h-5" />
+              <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               Learn Manufacturing
             </Link>
           </motion.button>

@@ -1,63 +1,93 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Linkedin, Twitter, Instagram, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border text-foreground">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-4 gap-8">
+    <footer className="bg-gradient-to-b from-slate-50 to-white dark:from-slate-900 dark:to-black border-t border-slate-200 dark:border-slate-800 text-foreground">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid md:grid-cols-4 gap-12">
           {/* Logo and Mission */}
           <div className="md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">P</span>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-lg">P</span>
+                </div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-cyan-600 to-orange-600 bg-clip-text text-transparent dark:from-cyan-400 dark:to-orange-400">PolyForm</span>
               </div>
-              <span className="text-xl font-semibold">PolyForm</span>
-            </div>
-            <p className="text-muted-foreground mb-4 max-w-md">
-              India's leading manufacturing aggregator platform. Connecting customers with 
-              certified vendors through intelligent matching and transparent bidding.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                LinkedIn
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Twitter
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                Instagram
-              </a>
-            </div>
+              <p className="text-muted-foreground mb-6 max-w-md leading-relaxed text-base">
+                India's leading manufacturing aggregator platform. Connecting customers with 
+                certified vendors through intelligent matching and transparent bidding.
+              </p>
+              <div className="flex space-x-4">
+                <a href="#" className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-cyan-500 hover:text-white transition-all duration-300 hover:scale-110">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-cyan-500 hover:text-white transition-all duration-300 hover:scale-110">
+                  <Twitter className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-cyan-500 hover:text-white transition-all duration-300 hover:scale-110">
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-400 hover:bg-cyan-500 hover:text-white transition-all duration-300 hover:scale-110">
+                  <Mail className="w-5 h-5" />
+                </a>
+              </div>
+            </motion.div>
           </div>
 
           {/* Platform */}
-          <div>
-            <h3 className="font-semibold mb-4">Platform</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><Link to="/quote" className="hover:text-primary transition-colors">Upload RFQ</Link></li>
-              <li><Link to="/dashboard" className="hover:text-primary transition-colors">Customer Dashboard</Link></li>
-              <li><Link to="/partners" className="hover:text-primary transition-colors">Vendor Portal</Link></li>
-              <li><Link to="/pricing" className="hover:text-primary transition-colors">Pricing</Link></li>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <h3 className="font-bold text-foreground mb-5 text-lg">Platform</h3>
+            <ul className="space-y-3">
+              <li><Link to="/quote" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Upload RFQ</Link></li>
+              <li><Link to="/dashboard" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Customer Dashboard</Link></li>
+              <li><Link to="/partners" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Vendor Portal</Link></li>
+              <li><Link to="/pricing" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Pricing</Link></li>
             </ul>
-          </div>
+          </motion.div>
 
           {/* Resources */}
-          <div>
-            <h3 className="font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><Link to="/services" className="hover:text-primary transition-colors">Service Dictionary</Link></li>
-              <li><Link to="/materials" className="hover:text-primary transition-colors">Material Guide</Link></li>
-              <li><Link to="/about" className="hover:text-primary transition-colors">About PolyBids</Link></li>
-              <li><Link to="/contact" className="hover:text-primary transition-colors">Contact Support</Link></li>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <h3 className="font-bold text-foreground mb-5 text-lg">Resources</h3>
+            <ul className="space-y-3">
+              <li><Link to="/services" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Service Dictionary</Link></li>
+              <li><Link to="/materials" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Material Guide</Link></li>
+              <li><Link to="/about" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> About PolyBids</Link></li>
+              <li><Link to="/contact" className="text-muted-foreground hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Contact Support</Link></li>
             </ul>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 PolyForm. All rights reserved. Digitizing manufacturing through intelligent aggregation.</p>
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="border-t border-slate-200 dark:border-slate-800 mt-12 pt-8 text-center"
+        >
+          <p className="text-muted-foreground">
+            &copy; 2024 PolyForm. All rights reserved. Digitizing manufacturing through intelligent aggregation.
+          </p>
+        </motion.div>
       </div>
     </footer>
   );

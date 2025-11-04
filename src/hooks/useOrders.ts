@@ -35,6 +35,29 @@ export interface Order {
   created_at: string;
   updated_at: string;
   user_id: string;
+  // New comprehensive fields
+  manufacturing_process_id?: string;
+  sub_process?: string;
+  design_units?: 'mm' | 'inch' | 'cm';
+  material_type_id?: string;
+  material_variant_id?: string;
+  selected_color?: string;
+  surface_finish_id?: string;
+  technical_drawing_path?: string;
+  has_threads?: boolean;
+  threads_description?: string;
+  has_inserts?: boolean;
+  inserts_description?: string;
+  tolerance_type?: 'standard' | 'tighter';
+  tolerance_description?: string;
+  surface_roughness?: string;
+  part_marking_id?: string;
+  has_assembly?: boolean;
+  assembly_type?: 'no_assembly' | 'assembly_test' | 'ship_in_assembly';
+  finished_appearance?: 'standard' | 'premium';
+  inspection_type_id?: string;
+  itar_compliance?: boolean;
+  nda_acknowledged?: boolean;
   // Related data
   material_data?: {
     id: string;
@@ -45,6 +68,40 @@ export interface Order {
     setup_cost: number;
     color_options: string[];
     properties: any;
+  };
+  manufacturing_process?: {
+    id: string;
+    name: string;
+    category: string;
+    sub_processes: string[];
+  };
+  material_type?: {
+    id: string;
+    name: string;
+    category: string;
+  };
+  material_variant?: {
+    id: string;
+    name: string;
+    color_options: string[];
+    cost_per_unit: number;
+    properties: any;
+  };
+  surface_finish?: {
+    id: string;
+    name: string;
+    roughness_value: string;
+  };
+  part_marking?: {
+    id: string;
+    name: string;
+    description: string;
+  };
+  inspection_type?: {
+    id: string;
+    name: string;
+    requires_drawing: boolean;
+    has_extra_fee: boolean;
   };
   order_files?: Array<{
     id: string;
@@ -146,14 +203,53 @@ export const useOrders = () => {
             }, {});
           }
         }
+
+        // Fetch order files
+        const orderIds = data.map(order => order.id);
+        let orderFilesData: Record<string, any[]> = {};
+        if (orderIds.length > 0) {
+          const { data: orderFiles } = await supabase
+            .from('order_files')
+            .select('*')
+            .in('order_id', orderIds);
+          
+          if (orderFiles) {
+            orderFilesData = orderFiles.reduce((acc, file) => {
+              if (!acc[file.order_id]) {
+                acc[file.order_id] = [];
+              }
+              acc[file.order_id].push(file);
+              return acc;
+            }, {} as Record<string, any[]>);
+          }
+        }
+
+        // Fetch order items
+        let orderItemsData: Record<string, any[]> = {};
+        if (orderIds.length > 0) {
+          const { data: orderItems } = await supabase
+            .from('order_items')
+            .select('*')
+            .in('order_id', orderIds);
+          
+          if (orderItems) {
+            orderItemsData = orderItems.reduce((acc, item) => {
+              if (!acc[item.order_id]) {
+                acc[item.order_id] = [];
+              }
+              acc[item.order_id].push(item);
+              return acc;
+            }, {} as Record<string, any[]>);
+          }
+        }
         
         // Combine the data
         const enrichedOrders = data.map(order => ({
           ...order,
           material_data: order.material_id ? materialsData[order.material_id] : null,
           customer: profilesData[order.user_id] || null,
-          order_files: [], // We'll fetch these separately if needed
-          order_items: [] // We'll fetch these separately if needed
+          order_files: orderFilesData[order.id] || [],
+          order_items: orderItemsData[order.id] || []
         }));
         
         setOrders(enrichedOrders);
@@ -230,6 +326,12 @@ export const useOrders = () => {
       .select(`
         *,
         material_data:materials(*),
+        manufacturing_process:manufacturing_processes(*),
+        material_type:material_types(*),
+        material_variant:material_variants(*),
+        surface_finish:surface_finishes(*),
+        part_marking:part_marking_types(*),
+        inspection_type:inspection_types(*),
         order_files(*),
         order_items(*),
         customer:profiles(*)

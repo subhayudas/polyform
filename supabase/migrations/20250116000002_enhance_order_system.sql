@@ -313,3 +313,4 @@ GRANT SELECT ON public.materials TO authenticated;
 GRANT SELECT ON public.pricing_templates TO authenticated;
 
 
+
