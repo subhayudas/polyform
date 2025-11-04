@@ -39,9 +39,9 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-lg fixed w-full z-50 top-0">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+    <nav className="bg-white/80 backdrop-blur-md shadow-lg/50 fixed z-50 top-4 left-4 right-4 rounded-2xl border border-white/20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-5">
+        <div className="flex justify-between h-12 sm:h-14">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <div className="w-8 h-8 bg-polyform-green-600 rounded-lg flex items-center justify-center mr-2">
@@ -137,7 +137,7 @@ const Navigation = () => {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/80 backdrop-blur-md border-t border-white/20 rounded-b-2xl">
             {navItems.map((item) => (
               <Link
                 key={item.name}

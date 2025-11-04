@@ -4,8 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { useNavigate, Link } from 'react-router-dom';
 import { Users } from 'lucide-react';
+import { motion } from 'framer-motion';
 import FileUpload from './FileUpload';
-import VideoBanner from './VideoBanner';
 import HeroContent from './HeroContent';
 import ServiceCards from './ServiceCards';
 import VisualShowcase from './VisualShowcase';
@@ -25,23 +25,74 @@ const Hero = () => {
 
   return (
     <div className="relative">
-      {/* Video Banner Section */}
-      <VideoBanner />
-
-      {/* Main Hero Section */}
-      <section className="relative py-16 bg-gradient-to-br from-background via-muted/20 to-background overflow-hidden">
-        {/* Light Background Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      {/* Main Hero Section with Dark Background */}
+      <section className="relative pt-24 pb-16 bg-black overflow-hidden">
+        {/* Animated Mesh Gradient Backgrounds */}
+        <div className="absolute inset-0 w-full h-full">
+          <motion.div
+            className="absolute inset-0 w-full h-full opacity-100"
+            style={{
+              background: 'radial-gradient(circle at 20% 50%, rgba(6, 182, 212, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(22, 78, 99, 0.15) 0%, transparent 50%), radial-gradient(circle at 40% 20%, rgba(249, 115, 22, 0.1) 0%, transparent 50%)',
+            }}
+            animate={{
+              opacity: [0.8, 1, 0.8],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div
+            className="absolute inset-0 w-full h-full opacity-60"
+            style={{
+              background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(6, 182, 212, 0.2) 25%, rgba(249, 115, 22, 0.2) 75%, rgba(255, 255, 255, 0.1) 100%)',
+            }}
+            animate={{
+              backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
         </div>
 
-        {/* Floating Elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-10 w-8 h-8 bg-primary/30 rounded-full animate-bounce opacity-60" style={{ animationDelay: '0.5s' }}></div>
-          <div className="absolute top-1/3 right-16 w-6 h-6 bg-secondary/30 rounded-full animate-bounce opacity-60" style={{ animationDelay: '1.5s' }}></div>
-          <div className="absolute bottom-1/3 left-1/4 w-4 h-4 bg-primary/40 rounded-full animate-bounce opacity-60" style={{ animationDelay: '2.5s' }}></div>
+        {/* Floating Light Elements */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[
+            { size: 150, left: 10, top: 20, color: 'rgba(6, 182, 212, 0.1)', x: 30, y: -20, duration: 12 },
+            { size: 200, left: 80, top: 60, color: 'rgba(249, 115, 22, 0.1)', x: -40, y: 30, duration: 15 },
+            { size: 120, left: 40, top: 80, color: 'rgba(6, 182, 212, 0.1)', x: 20, y: -30, duration: 14 },
+            { size: 180, left: 70, top: 30, color: 'rgba(249, 115, 22, 0.1)', x: -25, y: 25, duration: 13 },
+            { size: 140, left: 20, top: 70, color: 'rgba(6, 182, 212, 0.1)', x: 35, y: -35, duration: 16 },
+            { size: 160, left: 90, top: 50, color: 'rgba(249, 115, 22, 0.1)', x: -30, y: 40, duration: 11 },
+          ].map((config, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full blur-2xl"
+              style={{
+                width: `${config.size}px`,
+                height: `${config.size}px`,
+                left: `${config.left}%`,
+                top: `${config.top}%`,
+                backgroundColor: config.color,
+              }}
+              animate={{
+                x: [0, config.x, 0],
+                y: [0, config.y, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: config.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 0.5,
+              }}
+            />
+          ))}
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
