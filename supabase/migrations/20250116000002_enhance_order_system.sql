@@ -311,3 +311,5 @@ GROUP BY o.id, o.order_number, o.status, o.priority, o.created_at, o.estimated_d
 GRANT SELECT ON public.order_summary TO authenticated;
 GRANT SELECT ON public.materials TO authenticated;
 GRANT SELECT ON public.pricing_templates TO authenticated;
+
+
