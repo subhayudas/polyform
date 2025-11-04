@@ -80,74 +80,95 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
           const isHovered = hoveredCard === index;
           
           return (
-            <Card 
+            <motion.div
               key={index}
-              className="group cursor-pointer border-white/10 bg-white/5 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:border-primary/30 hover:bg-white/10"
-              style={{
-                filter: "url(#glass-effect)",
-              }}
-              onMouseEnter={() => setHoveredCard(index)}
-              onMouseLeave={() => setHoveredCard(null)}
-              onClick={() => handleFeatureClick(feature.title.toLowerCase().replace(' ', '-'))}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/15 transition-colors">
-                      <IconComponent className="h-6 w-6" />
-                    </div>
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg font-semibold text-white">
-                        {feature.title}
-                      </CardTitle>
-                      <CardDescription className="text-sm text-white/70">
-                        {feature.description}
-                      </CardDescription>
-                    </div>
-                  </div>
-                  <ArrowRight className={`h-5 w-5 text-white/60 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-                </div>
-              </CardHeader>
-              
-              <CardContent className={`transition-all duration-300 ${isHovered ? 'pb-6' : 'pb-0 max-h-0 overflow-hidden'}`}>
-                <div className="space-y-3 border-t border-white/10 pt-4">
-                  <div className="space-y-2">
-                    {feature.features.map((item, idx) => (
-                      <div key={idx} className="flex items-center text-xs text-white/70">
-                        <CheckCircle className="w-3 h-3 mr-2 text-cyan-400" />
-                        {item}
+              <Card 
+                className="group cursor-pointer border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 hover:border-cyan-400/40 hover:bg-white/10 hover:-translate-y-1"
+                style={{
+                  filter: "url(#glass-effect)",
+                }}
+                onMouseEnter={() => setHoveredCard(index)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => handleFeatureClick(feature.title.toLowerCase().replace(' ', '-'))}
+              >
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-orange-500/20 text-cyan-400 group-hover:from-cyan-500/30 group-hover:to-orange-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                        <IconComponent className="h-7 w-7" />
                       </div>
-                    ))}
+                      <div className="space-y-1">
+                        <CardTitle className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                          {feature.title}
+                        </CardTitle>
+                        <CardDescription className="text-sm text-white/80">
+                          {feature.description}
+                        </CardDescription>
+                      </div>
+                    </div>
+                    <ArrowRight className={`h-5 w-5 text-white/60 transition-all duration-300 ${isHovered ? 'translate-x-2 text-cyan-400' : ''}`} />
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardHeader>
+                
+                <CardContent className={`transition-all duration-300 ${isHovered ? 'pb-6' : 'pb-0 max-h-0 overflow-hidden'}`}>
+                  <div className="space-y-3 border-t border-white/10 pt-4">
+                    <div className="space-y-2.5">
+                      {feature.features.map((item, idx) => (
+                        <div key={idx} className="flex items-center text-sm text-white/80">
+                          <CheckCircle className="w-4 h-4 mr-2 text-cyan-400 flex-shrink-0" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           );
         })}
       </div>
 
       {/* Manufacturing Services */}
-      <div className="space-y-4 text-center lg:text-left">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
+        className="space-y-5 text-center lg:text-left mt-8"
+      >
         <div>
-          <p className="text-sm text-white/70 mb-3">Available Services:</p>
-          <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-            {manufacturingServices.map((service) => (
-              <Badge key={service} variant="outline" className="text-xs border-white/20 text-white/80 bg-white/5">
-                {service}
-              </Badge>
+          <p className="text-sm font-medium text-white/80 mb-4">Available Services:</p>
+          <div className="flex flex-wrap gap-2.5 justify-center lg:justify-start">
+            {manufacturingServices.map((service, idx) => (
+              <motion.div
+                key={service}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: idx * 0.05 }}
+              >
+                <Badge variant="outline" className="text-xs border-white/30 text-white/90 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-cyan-400/50 transition-all duration-300 px-3 py-1.5">
+                  {service}
+                </Badge>
+              </motion.div>
             ))}
           </div>
         </div>
         
         <motion.button
-          className="w-full px-6 py-3 rounded-full bg-transparent border-2 border-white/30 text-white font-medium text-sm transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:text-cyan-100 cursor-pointer backdrop-blur-sm"
-          whileHover={{ scale: 1.02 }}
+          className="w-full px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-orange-500/20 border-2 border-white/30 text-white font-semibold text-sm transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-orange-500/30 hover:border-cyan-400/50 hover:text-cyan-100 cursor-pointer backdrop-blur-md group"
+          whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/quote')}
         >
-          Start Your RFQ
+          <span className="flex items-center justify-center gap-2">
+            Start Your RFQ
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </span>
         </motion.button>
-      </div>
+      </motion.div>
     </div>
   );
 };
