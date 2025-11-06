@@ -67,10 +67,10 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
       {/* PolyBids System Features */}
       <div className="space-y-4">
         <div className="text-center lg:text-left mb-4">
-          <h3 className="text-xl font-semibold text-white mb-2">
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
             How PolyBids Works
           </h3>
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-gray-600">
             Our intelligent matching system connects you with the right manufacturers
           </p>
         </div>
@@ -87,7 +87,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card 
-                className="group cursor-pointer border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/20 hover:border-cyan-400/40 hover:bg-white/10 hover:-translate-y-1"
+                className="group cursor-pointer border-gray-200 bg-white backdrop-blur-md transition-all duration-300 hover:shadow-xl hover:shadow-[#90A955]/20 hover:border-[#90A955]/40 hover:bg-[#90A955]/5 hover:-translate-y-1"
                 style={{
                   filter: "url(#glass-effect)",
                 }}
@@ -98,28 +98,28 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-orange-500/20 text-cyan-400 group-hover:from-cyan-500/30 group-hover:to-orange-500/30 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#90A955]/10 text-[#90A955] group-hover:bg-[#90A955]/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                         <IconComponent className="h-7 w-7" />
                       </div>
                       <div className="space-y-1">
-                        <CardTitle className="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                        <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-[#90A955] transition-colors">
                           {feature.title}
                         </CardTitle>
-                        <CardDescription className="text-sm text-white/80">
+                        <CardDescription className="text-sm text-gray-600">
                           {feature.description}
                         </CardDescription>
                       </div>
                     </div>
-                    <ArrowRight className={`h-5 w-5 text-white/60 transition-all duration-300 ${isHovered ? 'translate-x-2 text-cyan-400' : ''}`} />
+                    <ArrowRight className={`h-5 w-5 text-gray-400 transition-all duration-300 ${isHovered ? 'translate-x-2 text-[#90A955]' : ''}`} />
                   </div>
                 </CardHeader>
                 
                 <CardContent className={`transition-all duration-300 ${isHovered ? 'pb-6' : 'pb-0 max-h-0 overflow-hidden'}`}>
-                  <div className="space-y-3 border-t border-white/10 pt-4">
+                  <div className="space-y-3 border-t border-gray-200 pt-4">
                     <div className="space-y-2.5">
                       {feature.features.map((item, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-white/80">
-                          <CheckCircle className="w-4 h-4 mr-2 text-cyan-400 flex-shrink-0" />
+                        <div key={idx} className="flex items-center text-sm text-gray-700">
+                          <CheckCircle className="w-4 h-4 mr-2 text-[#90A955] flex-shrink-0" />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -140,7 +140,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
         className="space-y-5 text-center lg:text-left mt-8"
       >
         <div>
-          <p className="text-sm font-medium text-white/80 mb-4">Available Services:</p>
+          <p className="text-sm font-medium text-gray-700 mb-4">Available Services:</p>
           <div className="flex flex-wrap gap-2.5 justify-center lg:justify-start">
             {manufacturingServices.map((service, idx) => (
               <motion.div
@@ -149,7 +149,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
               >
-                <Badge variant="outline" className="text-xs border-white/30 text-white/90 bg-white/10 backdrop-blur-sm hover:bg-white/20 hover:border-cyan-400/50 transition-all duration-300 px-3 py-1.5">
+                <Badge variant="outline" className="text-xs border-gray-300 text-gray-700 bg-white backdrop-blur-sm hover:bg-[#90A955]/10 hover:border-[#90A955]/50 hover:text-[#90A955] transition-all duration-300 px-3 py-1.5">
                   {service}
                 </Badge>
               </motion.div>
@@ -158,7 +158,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
         </div>
         
         <motion.button
-          className="w-full px-8 py-4 rounded-full bg-gradient-to-r from-cyan-500/20 to-orange-500/20 border-2 border-white/30 text-white font-semibold text-sm transition-all duration-300 hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-orange-500/30 hover:border-cyan-400/50 hover:text-cyan-100 cursor-pointer backdrop-blur-md group"
+          className="w-full px-8 py-4 rounded-full bg-[#90A955]/10 border-2 border-[#90A955]/30 text-[#90A955] font-semibold text-sm transition-all duration-300 hover:bg-[#90A955] hover:border-[#90A955] hover:text-white cursor-pointer backdrop-blur-md group"
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/quote')}
