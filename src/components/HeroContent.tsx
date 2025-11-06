@@ -59,8 +59,8 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
 
           <linearGradient id="hero-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="30%" stopColor="#06b6d4" />
-            <stop offset="70%" stopColor="#f97316" />
+            <stop offset="30%" stopColor="#90A955" />
+            <stop offset="70%" stopColor="#90A955" />
             <stop offset="100%" stopColor="#ffffff" />
           </linearGradient>
         </defs>
@@ -69,7 +69,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 -z-10 opacity-30">
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-primary/20 via-cyan-500/20 to-orange-500/20 rounded-3xl blur-3xl"
+          className="absolute inset-0 bg-gradient-to-br from-[#90A955]/20 via-[#90A955]/15 to-[#90A955]/10 rounded-3xl blur-3xl"
           animate={{
             backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
           }}
@@ -84,7 +84,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
       <div className="relative">
         {/* Badge */}
         <motion.div
-          className="inline-flex items-center px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm mb-6 relative border border-white/10"
+          className="inline-flex items-center px-4 py-2 rounded-full bg-[#90A955]/10 backdrop-blur-sm mb-6 relative border border-[#90A955]/20"
           style={{
             filter: "url(#glass-effect)",
           }}
@@ -92,9 +92,9 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="absolute top-0 left-1 right-1 h-px bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent rounded-full" />
-          <Network className="w-4 h-4 mr-2 text-cyan-400" />
-          <span className="text-white/90 text-sm font-medium relative z-10 tracking-wide">
+          <div className="absolute top-0 left-1 right-1 h-px bg-gradient-to-r from-transparent via-[#90A955]/30 to-transparent rounded-full" />
+          <Network className="w-4 h-4 mr-2 text-[#90A955]" />
+          <span className="text-gray-700 text-sm font-medium relative z-10 tracking-wide">
             Manufacturing Aggregator Platform
           </span>
         </motion.div>
@@ -106,34 +106,14 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <motion.span
-            className="block font-light text-white/90 text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl mb-3 tracking-wider"
-            style={{
-              background: "linear-gradient(135deg, #ffffff 0%, #06b6d4 30%, #f97316 70%, #ffffff 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              filter: "url(#text-glow)",
-              backgroundSize: "200% 200%",
-            }}
-            animate={{
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            Connect with
-          </motion.span>
-          <span className="block font-black text-white drop-shadow-2xl mb-2">Certified Vendors</span>
-          <span className="block font-light text-white/80 italic text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Intelligently</span>
+          
+          <span className="block font-black text-[#90A955] drop-shadow-2xl mb-2">Certified Vendors</span>
+          <span className="block font-light text-gray-600 italic text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Intelligently</span>
         </motion.h1>
 
         {/* Description */}
         <motion.p
-          className="text-lg md:text-xl lg:text-2xl text-white/80 mb-10 max-w-2xl leading-relaxed mx-auto lg:mx-0 font-light"
+          className="text-lg md:text-xl lg:text-2xl text-gray-700 mb-10 max-w-2xl leading-relaxed mx-auto lg:mx-0 font-light"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
@@ -150,7 +130,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           transition={{ duration: 0.6, delay: 1.0 }}
         >
           <motion.button
-            className="px-12 py-5 rounded-full bg-gradient-to-r from-cyan-500 to-orange-500 text-white font-semibold text-base transition-all duration-300 hover:from-cyan-400 hover:to-orange-400 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-cyan-500/50 flex items-center justify-center gap-3 group"
+            className="px-12 py-5 rounded-full bg-[#90A955] text-white font-semibold text-base transition-all duration-300 hover:bg-[#90A955]/90 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-[#90A955]/50 flex items-center justify-center gap-3 group"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={onUploadClick}
@@ -159,17 +139,18 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
             Upload RFQ
           </motion.button>
           
-          <motion.button
-            className="px-12 py-5 rounded-full bg-transparent border-2 border-white/30 text-white font-medium text-base transition-all duration-300 hover:bg-white/10 hover:border-cyan-400/50 hover:text-cyan-100 cursor-pointer backdrop-blur-md flex items-center justify-center gap-3 group"
+          <motion.div
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
-            asChild
           >
-            <Link to="/services">
+            <Link 
+              to="/services"
+              className="px-12 py-5 rounded-full bg-transparent border-2 border-[#90A955]/30 text-[#90A955] font-medium text-base transition-all duration-300 hover:bg-[#90A955]/10 hover:border-[#90A955]/50 hover:text-[#90A955] cursor-pointer backdrop-blur-md flex items-center justify-center gap-3 group"
+            >
               <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               Learn Manufacturing
             </Link>
-          </motion.button>
+          </motion.div>
         </motion.div>
 
         {/* Educational CTA */}
@@ -179,22 +160,22 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1.2 }}
         >
-          <p className="text-sm text-white/70 mb-3">
+          <p className="text-sm text-gray-600 mb-3">
             New to manufacturing? Explore our educational resources:
           </p>
           <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/services" className="hover:bg-white/10">
+              <Link to="/services" className="hover:bg-[#90A955]/10 text-gray-700 hover:text-[#90A955]">
                 Service Dictionary
               </Link>
             </Button>
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/materials" className="hover:bg-white/10">
+              <Link to="/materials" className="hover:bg-[#90A955]/10 text-gray-700 hover:text-[#90A955]">
                 Material Guide
               </Link>
             </Button>
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/partners" className="hover:bg-white/10">
+              <Link to="/partners" className="hover:bg-[#90A955]/10 text-gray-700 hover:text-[#90A955]">
                 Verified Partners
               </Link>
             </Button>
