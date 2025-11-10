@@ -105,3 +105,4 @@ GRANT ALL ON public.vendor_application_status_history TO authenticated;
 
 
 
+
