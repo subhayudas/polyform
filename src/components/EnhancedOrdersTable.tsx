@@ -175,7 +175,15 @@ const EnhancedOrdersTable: React.FC<EnhancedOrdersTableProps> = ({
         <CardContent className="p-12 text-center">
           <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">No orders found</h3>
-          <p className="text-gray-500">You haven't placed any orders yet.</p>
+          <p className="text-gray-500 mb-4">You haven't placed any orders yet.</p>
+          <p className="text-sm text-gray-400 mb-4">Check the browser console for debug information.</p>
+          <Button 
+            onClick={() => window.location.href = '/upload'}
+            className="bg-polyform-green-600 hover:bg-polyform-green-700"
+          >
+            <Package className="w-4 h-4 mr-2" />
+            Create Your First Order
+          </Button>
         </CardContent>
       </Card>
     );
