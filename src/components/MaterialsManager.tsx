@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useOrders } from '@/hooks/useOrders';
+import { supabase } from '@/integrations/supabase/client';
 import { Plus, Edit, Trash2, Package } from 'lucide-react';
 
 interface Material {
@@ -80,8 +81,6 @@ const MaterialsManager: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const { supabase } = await import('@/integrations/supabase/client');
-      
       if (editingMaterial) {
         // Update existing material
         const { error } = await supabase
@@ -177,7 +176,6 @@ const MaterialsManager: React.FC = () => {
     if (!confirm(`Are you sure you want to delete ${material.name}?`)) return;
 
     try {
-      const { supabase } = await import('@/integrations/supabase/client');
       const { error } = await supabase
         .from('materials')
         .delete()
