@@ -12,10 +12,11 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useOrders } from '@/hooks/useOrders';
 import { Link } from 'react-router-dom';
 import { Plus, BarChart3, TrendingUp, Package } from 'lucide-react';
+import CreateTestOrder from '@/components/CreateTestOrder';
 
 const Dashboard = () => {
   const { userRole, user } = useAuth();
-  const { orders, isLoading } = useOrders();
+  const { orders, isLoading, error } = useOrders();
 
   const summary = {
     totalOrders: orders.length,
@@ -148,19 +149,37 @@ const Dashboard = () => {
 
               {/* Empty State for New Users */}
               {orders.length === 0 && !isLoading && (
-                <Card className="border-2 border-dashed">
-                  <CardContent className="p-12 text-center">
-                    <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Get Started with Your First Order</h3>
-                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                      Upload your 3D model and get an instant quote. Our team will review and process your order quickly.
-                    </p>
-                    <Link to="/upload">
-                      <Button className="bg-polyform-green-600 hover:bg-polyform-green-700">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Create Your First Order
-                      </Button>
-                    </Link>
+                <>
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-12 text-center">
+                      <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Get Started with Your First Order</h3>
+                      <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                        Upload your 3D model and get an instant quote. Our team will review and process your order quickly.
+                      </p>
+                      <Link to="/upload">
+                        <Button className="bg-polyform-green-600 hover:bg-polyform-green-700">
+                          <Plus className="w-4 h-4 mr-2" />
+                          Create Your First Order
+                        </Button>
+                      </Link>
+                    </CardContent>
+                  </Card>
+                  
+                  {/* Debug component */}
+                  <div className="mt-6">
+                    <CreateTestOrder />
+                  </div>
+                </>
+              )}
+              
+              {/* Display error if any */}
+              {error && (
+                <Card className="border-2 border-red-300 bg-red-50">
+                  <CardContent className="p-6">
+                    <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Orders</h3>
+                    <p className="text-red-700">{error}</p>
+                    <p className="text-sm text-red-600 mt-2">Check the browser console for more details.</p>
                   </CardContent>
                 </Card>
               )}

@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -134,9 +134,10 @@ export const useOrders = () => {
   const [error, setError] = useState<string | null>(null);
   const { user, userRole } = useAuth();
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     if (!user) {
       console.log('No user found, skipping order fetch');
+      setOrders([]);
       setIsLoading(false);
       return;
     }
@@ -156,15 +157,18 @@ export const useOrders = () => {
         query = query.eq('user_id', user.id);
       }
 
-      console.log('Executing query...');
-      const { data, error } = await query.order('created_at', { ascending: false });
+      console.log('Executing query...', 'User Role:', userRole);
+      const { data, error: fetchError } = await query.order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Database error:', error);
-        throw error;
+      if (fetchError) {
+        console.error('Database error:', fetchError);
+        throw fetchError;
       }
 
       console.log('Orders fetched successfully:', data?.length || 0, 'orders');
+      if (data) {
+        console.log('Orders data:', data);
+      }
       
       // If we have orders, try to fetch related data
       if (data && data.length > 0) {
@@ -172,7 +176,7 @@ export const useOrders = () => {
         
         // Fetch materials data
         const materialIds = data.map(order => order.material_id).filter(Boolean);
-        let materialsData = {};
+        let materialsData: Record<string, any> = {};
         if (materialIds.length > 0) {
           const { data: materials } = await supabase
             .from('materials')
@@ -180,7 +184,7 @@ export const useOrders = () => {
             .in('id', materialIds);
           
           if (materials) {
-            materialsData = materials.reduce((acc, material) => {
+            materialsData = materials.reduce((acc: Record<string, any>, material) => {
               acc[material.id] = material;
               return acc;
             }, {});
@@ -189,7 +193,7 @@ export const useOrders = () => {
         
         // Fetch profiles data
         const userIds = [...new Set(data.map(order => order.user_id))];
-        let profilesData = {};
+        let profilesData: Record<string, any> = {};
         if (userIds.length > 0) {
           const { data: profiles } = await supabase
             .from('profiles')
@@ -197,7 +201,7 @@ export const useOrders = () => {
             .in('id', userIds);
           
           if (profiles) {
-            profilesData = profiles.reduce((acc, profile) => {
+            profilesData = profiles.reduce((acc: Record<string, any>, profile) => {
               acc[profile.id] = profile;
               return acc;
             }, {});
@@ -254,19 +258,21 @@ export const useOrders = () => {
         
         setOrders(enrichedOrders);
       } else {
+        console.log('No orders found, setting empty array');
         setOrders([]);
       }
     } catch (err) {
       console.error('Error fetching orders:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch orders');
+      setOrders([]);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user, userRole]);
 
   useEffect(() => {
     fetchOrders();
-  }, [user, userRole]);
+  }, [fetchOrders]);
 
   const createOrder = async (orderData: Omit<Order, 'id' | 'order_number' | 'created_at' | 'updated_at' | 'user_id'>) => {
     if (!user) throw new Error('User not authenticated');

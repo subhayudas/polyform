@@ -294,109 +294,231 @@ export type Database = {
       orders: {
         Row: {
           assigned_to: string | null
+          assembly_type: string | null
           billing_address: Json | null
           cancelled_at: string | null
           cancelled_reason: string | null
           color: string | null
           created_at: string | null
           delivered_at: string | null
+          design_units: string | null
           estimated_delivery: string | null
           estimated_print_time: number | null
           estimated_volume: number | null
           estimated_weight: number | null
           file_name: string
+          finished_appearance: string | null
+          has_assembly: boolean | null
+          has_inserts: boolean | null
+          has_threads: boolean | null
           id: string
           infill_percentage: number | null
+          inserts_description: string | null
+          inspection_type_id: string | null
+          itar_compliance: boolean | null
           layer_height: number | null
+          manufacturing_process_id: string | null
           material: string
           material_id: string | null
+          material_type_id: string | null
+          material_variant_id: string | null
+          nda_acknowledged: boolean | null
           notes: string | null
           order_number: string | null
+          part_marking_id: string | null
           post_processing: string[] | null
           price: number | null
           priority: Database["public"]["Enums"]["order_priority"] | null
           production_notes: string | null
           quantity: number
+          selected_color: string | null
           shipped_at: string | null
           shipping_address: Json | null
           status: Database["public"]["Enums"]["order_status"] | null
+          sub_process: string | null
           support_required: boolean | null
+          surface_finish_id: string | null
+          surface_roughness: string | null
+          technical_drawing_path: string | null
+          threads_description: string | null
+          tolerance_description: string | null
+          tolerance_type: string | null
           tracking_number: string | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           assigned_to?: string | null
+          assembly_type?: string | null
           billing_address?: Json | null
           cancelled_at?: string | null
           cancelled_reason?: string | null
           color?: string | null
           created_at?: string | null
           delivered_at?: string | null
+          design_units?: string | null
           estimated_delivery?: string | null
           estimated_print_time?: number | null
           estimated_volume?: number | null
           estimated_weight?: number | null
           file_name: string
+          finished_appearance?: string | null
+          has_assembly?: boolean | null
+          has_inserts?: boolean | null
+          has_threads?: boolean | null
           id?: string
           infill_percentage?: number | null
+          inserts_description?: string | null
+          inspection_type_id?: string | null
+          itar_compliance?: boolean | null
           layer_height?: number | null
+          manufacturing_process_id?: string | null
           material: string
           material_id?: string | null
+          material_type_id?: string | null
+          material_variant_id?: string | null
+          nda_acknowledged?: boolean | null
           notes?: string | null
           order_number?: string | null
+          part_marking_id?: string | null
           post_processing?: string[] | null
           price?: number | null
           priority?: Database["public"]["Enums"]["order_priority"] | null
           production_notes?: string | null
           quantity?: number
+          selected_color?: string | null
           shipped_at?: string | null
           shipping_address?: Json | null
           status?: Database["public"]["Enums"]["order_status"] | null
+          sub_process?: string | null
           support_required?: boolean | null
+          surface_finish_id?: string | null
+          surface_roughness?: string | null
+          technical_drawing_path?: string | null
+          threads_description?: string | null
+          tolerance_description?: string | null
+          tolerance_type?: string | null
           tracking_number?: string | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           assigned_to?: string | null
+          assembly_type?: string | null
           billing_address?: Json | null
           cancelled_at?: string | null
           cancelled_reason?: string | null
           color?: string | null
           created_at?: string | null
           delivered_at?: string | null
+          design_units?: string | null
           estimated_delivery?: string | null
           estimated_print_time?: number | null
           estimated_volume?: number | null
           estimated_weight?: number | null
           file_name?: string
+          finished_appearance?: string | null
+          has_assembly?: boolean | null
+          has_inserts?: boolean | null
+          has_threads?: boolean | null
           id?: string
           infill_percentage?: number | null
+          inserts_description?: string | null
+          inspection_type_id?: string | null
+          itar_compliance?: boolean | null
           layer_height?: number | null
+          manufacturing_process_id?: string | null
           material?: string
           material_id?: string | null
+          material_type_id?: string | null
+          material_variant_id?: string | null
+          nda_acknowledged?: boolean | null
           notes?: string | null
           order_number?: string | null
+          part_marking_id?: string | null
           post_processing?: string[] | null
           price?: number | null
           priority?: Database["public"]["Enums"]["order_priority"] | null
           production_notes?: string | null
           quantity?: number
+          selected_color?: string | null
           shipped_at?: string | null
           shipping_address?: Json | null
           status?: Database["public"]["Enums"]["order_status"] | null
+          sub_process?: string | null
           support_required?: boolean | null
+          surface_finish_id?: string | null
+          surface_roughness?: string | null
+          technical_drawing_path?: string | null
+          threads_description?: string | null
+          tolerance_description?: string | null
+          tolerance_type?: string | null
           tracking_number?: string | null
           updated_at?: string | null
           user_id?: string
         }
         Relationships: [
           {
+            foreignKeyName: "orders_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_inspection_type_id_fkey"
+            columns: ["inspection_type_id"]
+            isOneToOne: false
+            referencedRelation: "inspection_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_manufacturing_process_id_fkey"
+            columns: ["manufacturing_process_id"]
+            isOneToOne: false
+            referencedRelation: "manufacturing_processes"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "orders_material_id_fkey"
             columns: ["material_id"]
             isOneToOne: false
             referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_material_type_id_fkey"
+            columns: ["material_type_id"]
+            isOneToOne: false
+            referencedRelation: "material_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_material_variant_id_fkey"
+            columns: ["material_variant_id"]
+            isOneToOne: false
+            referencedRelation: "material_variants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_part_marking_id_fkey"
+            columns: ["part_marking_id"]
+            isOneToOne: false
+            referencedRelation: "part_marking_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_surface_finish_id_fkey"
+            columns: ["surface_finish_id"]
+            isOneToOne: false
+            referencedRelation: "surface_finishes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
