@@ -3,6 +3,8 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import AdminPanel from '@/components/AdminPanel';
 import DashboardStats from '@/components/DashboardStats';
+import DashboardCharts from '@/components/DashboardCharts';
+import DashboardInsights from '@/components/DashboardInsights';
 import EnhancedOrdersTable from '@/components/EnhancedOrdersTable';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import AIChatbot from '@/components/AIChatbot';
@@ -68,6 +70,29 @@ const Dashboard = () => {
           {userRole === 'admin' ? (
             <>
               <AdminPanel />
+              
+              {/* Admin Key Insights */}
+              {orders.length > 0 && (
+                <div className="mt-8 mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <TrendingUp className="w-6 h-6 text-polyform-green-600" />
+                    Business Insights
+                  </h2>
+                  <DashboardInsights orders={orders} />
+                </div>
+              )}
+
+              {/* Admin Analytics Charts */}
+              {orders.length > 0 && (
+                <div className="mt-8 mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                    <BarChart3 className="w-6 h-6 text-polyform-green-600" />
+                    Analytics & Trends
+                  </h2>
+                  <DashboardCharts orders={orders} />
+                </div>
+              )}
+
               <div className="mt-8">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900">All Orders</h2>
@@ -83,6 +108,22 @@ const Dashboard = () => {
             <>
               {/* Stats Section */}
               <DashboardStats summary={summary} />
+
+              {/* Detailed Insights */}
+              {orders.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Key Insights</h2>
+                  <DashboardInsights orders={orders} />
+                </div>
+              )}
+
+              {/* Analytics Charts */}
+              {orders.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Analytics & Trends</h2>
+                  <DashboardCharts orders={orders} />
+                </div>
+              )}
 
               {/* Quick Insights */}
               {orders.length > 0 && (
