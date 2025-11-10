@@ -2,7 +2,6 @@ import React from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import AdminPanel from '@/components/AdminPanel';
-import DashboardStats from '@/components/DashboardStats';
 import DashboardCharts from '@/components/DashboardCharts';
 import DashboardInsights from '@/components/DashboardInsights';
 import EnhancedOrdersTable from '@/components/EnhancedOrdersTable';
@@ -13,7 +12,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrders } from '@/hooks/useOrders';
 import { Link } from 'react-router-dom';
-import { Plus, BarChart3, TrendingUp, Package } from 'lucide-react';
+import { Plus, BarChart3, TrendingUp, Package, AlertCircle } from 'lucide-react';
 import CreateTestOrder from '@/components/CreateTestOrder';
 
 const Dashboard = () => {
@@ -33,28 +32,34 @@ const Dashboard = () => {
     ? summary.totalSpent / orders.length 
     : 0;
 
+  const currentTime = new Date();
+  const greeting = currentTime.getHours() < 12 ? 'Good morning' : 
+                  currentTime.getHours() < 17 ? 'Good afternoon' : 'Good evening';
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-white">
       <Navigation />
       
-      {/* Enhanced Header */}
-      <section className="pt-20 pb-8 bg-gradient-to-r from-polyform-green-600 to-polyform-green-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      {/* Clean Header */}
+      <section className="pt-20 px-6 py-4 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold mb-2">
-                {userRole === 'admin' ? 'Admin Dashboard' : 'My Dashboard'}
+              <h1 className="text-2xl font-semibold text-gray-900">
+                {greeting}, {user?.email?.split('@')[0]}
               </h1>
-              <p className="text-polyform-green-100 text-lg">
-                {userRole === 'admin' 
-                  ? 'Manage orders and monitor business performance'
-                  : 'Track your orders and manage your projects'
-                }
+              <p className="text-sm text-gray-500 mt-1">
+                {new Date().toLocaleDateString('en-US', { 
+                  weekday: 'long', 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })}
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3">
               <Link to="/upload">
-                <Button className="bg-white text-polyform-green-600 hover:bg-gray-100 font-semibold shadow-lg">
+                <Button className="bg-gray-900 text-white hover:bg-gray-800 font-medium">
                   <Plus className="w-4 h-4 mr-2" />
                   New Order
                 </Button>
@@ -71,34 +76,30 @@ const Dashboard = () => {
             <>
               <AdminPanel />
               
-              {/* Admin Key Insights */}
+              {/* Admin Analytics */}
               {orders.length > 0 && (
                 <div className="mt-8 mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <TrendingUp className="w-6 h-6 text-polyform-green-600" />
-                    Business Insights
-                  </h2>
                   <DashboardInsights orders={orders} />
                 </div>
               )}
 
-              {/* Admin Analytics Charts */}
+              {/* Admin Charts */}
               {orders.length > 0 && (
                 <div className="mt-8 mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                    <BarChart3 className="w-6 h-6 text-polyform-green-600" />
-                    Analytics & Trends
-                  </h2>
                   <DashboardCharts orders={orders} />
                 </div>
               )}
 
-              <div className="mt-8">
+              {/* Orders Table */}
+              <div className="mt-8 border-b border-gray-100 pb-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900">All Orders</h2>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900">All Orders</h3>
+                    <p className="text-sm text-gray-500 mt-1">Manage and monitor all customer orders</p>
+                  </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <BarChart3 className="w-4 h-4" />
-                    <span>Total: {orders.length} orders</span>
+                    <span className="font-medium">{orders.length}</span>
+                    <span>orders</span>
                   </div>
                 </div>
                 <EnhancedOrdersTable orders={orders} isLoading={isLoading} />
@@ -106,13 +107,9 @@ const Dashboard = () => {
             </>
           ) : (
             <>
-              {/* Stats Section */}
-              <DashboardStats summary={summary} />
-
               {/* Detailed Insights */}
               {orders.length > 0 && (
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Key Insights</h2>
                   <DashboardInsights orders={orders} />
                 </div>
               )}
@@ -120,109 +117,61 @@ const Dashboard = () => {
               {/* Analytics Charts */}
               {orders.length > 0 && (
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Analytics & Trends</h2>
                   <DashboardCharts orders={orders} />
                 </div>
               )}
 
-              {/* Quick Insights */}
-              {orders.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <Card className="border-l-4 border-l-blue-500">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-600 mb-1">Average Order Value</p>
-                          <p className="text-2xl font-bold text-gray-900">
-                            ${avgOrderValue.toFixed(2)}
-                          </p>
-                        </div>
-                        <TrendingUp className="w-8 h-8 text-blue-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-l-4 border-l-green-500">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-600 mb-1">Completion Rate</p>
-                          <p className="text-2xl font-bold text-gray-900">
-                            {summary.totalOrders > 0 
-                              ? ((summary.completedOrders / summary.totalOrders) * 100).toFixed(0)
-                              : 0}%
-                          </p>
-                        </div>
-                        <Package className="w-8 h-8 text-green-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-l-4 border-l-purple-500">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-sm font-medium text-gray-600 mb-1">Active Projects</p>
-                          <p className="text-2xl font-bold text-gray-900">
-                            {summary.activeOrders}
-                          </p>
-                          <p className="text-xs text-gray-500 mt-1">In progress</p>
-                        </div>
-                        <Package className="w-8 h-8 text-purple-500" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              )}
-
               {/* Orders Section */}
-              <div className="mb-6">
+              <div className="border-b border-gray-100 pb-6 mb-6">
                 <div className="flex items-center justify-between mb-6">
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">My Orders</h2>
-                    <p className="text-gray-600 mt-1">
-                      View and manage all your orders in one place
+                    <h3 className="text-lg font-medium text-gray-900">My Orders</h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                      View and manage all your orders
                     </p>
                   </div>
+                  {orders.length > 0 && (
+                    <div className="text-sm text-gray-600">
+                      <span className="font-medium">{orders.length}</span> orders
+                    </div>
+                  )}
                 </div>
-                <EnhancedOrdersTable orders={orders} isLoading={isLoading} />
-              </div>
-
-              {/* Empty State for New Users */}
-              {orders.length === 0 && !isLoading && (
-                <>
-                  <Card className="border-2 border-dashed">
-                    <CardContent className="p-12 text-center">
-                      <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">Get Started with Your First Order</h3>
-                      <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                        Upload your 3D model and get an instant quote. Our team will review and process your order quickly.
-                      </p>
-                      <Link to="/upload">
-                        <Button className="bg-polyform-green-600 hover:bg-polyform-green-700">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Create Your First Order
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                  
-                  {/* Debug component */}
-                  <div className="mt-6">
-                    <CreateTestOrder />
+                {orders.length > 0 ? (
+                  <EnhancedOrdersTable orders={orders} isLoading={isLoading} />
+                ) : !isLoading && (
+                  <div className="text-center py-12">
+                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                      <Package className="w-6 h-6 text-gray-400" />
+                    </div>
+                    <h4 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h4>
+                    <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                      Upload your 3D model and get an instant quote
+                    </p>
+                    <Link to="/upload">
+                      <Button className="bg-gray-900 text-white hover:bg-gray-800">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create First Order
+                      </Button>
+                    </Link>
+                    <div className="mt-6">
+                      <CreateTestOrder />
+                    </div>
                   </div>
-                </>
-              )}
+                )}
+              </div>
               
               {/* Display error if any */}
               {error && (
-                <Card className="border-2 border-red-300 bg-red-50">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold text-red-900 mb-2">Error Loading Orders</h3>
-                    <p className="text-red-700">{error}</p>
-                    <p className="text-sm text-red-600 mt-2">Check the browser console for more details.</p>
-                  </CardContent>
-                </Card>
+                <div className="border-l-2 border-l-red-500 bg-red-50 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-red-900 mb-1">Error Loading Orders</h4>
+                      <p className="text-sm text-red-700">{error}</p>
+                      <p className="text-xs text-red-600 mt-2">Check the browser console for more details.</p>
+                    </div>
+                  </div>
+                </div>
               )}
             </>
           )}

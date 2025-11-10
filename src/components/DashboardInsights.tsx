@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Order } from '@/hooks/useOrders';
 import { 
   Clock, 
@@ -9,7 +9,11 @@ import {
   Calendar,
   DollarSign,
   Package2,
-  Zap
+  Zap,
+  ChevronUp,
+  ChevronDown,
+  MoreHorizontal,
+  ArrowRight
 } from 'lucide-react';
 import { format, parseISO, differenceInDays } from 'date-fns';
 import { Progress } from '@/components/ui/progress';
@@ -19,6 +23,9 @@ interface DashboardInsightsProps {
 }
 
 const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
+  const [hoveredInsight, setHoveredInsight] = useState<string | null>(null);
+  const [expandedAlert, setExpandedAlert] = useState<boolean>(false);
+
   const insights = useMemo(() => {
     const now = new Date();
     
@@ -69,7 +76,7 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
     const mostPopularMaterial = Object.entries(materialCounts)
       .sort((a, b) => b[1] - a[1])[0];
 
-    // Average processing time (for completed orders)
+    // Average processing time
     const completedWithDelivery = completedOrders.filter(o => o.created_at && o.delivered_at);
     const avgProcessingTime = completedWithDelivery.length > 0
       ? completedWithDelivery.reduce((sum, order) => {
@@ -103,72 +110,57 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
     };
   }, [orders]);
 
-  const getInsightColor = (value: number, isGood: boolean) => {
-    if (isGood) {
-      return value > 0 ? 'text-green-600' : 'text-red-600';
-    }
-    return value > 0 ? 'text-red-600' : 'text-green-600';
-  };
-
   const insightCards = [
     {
+      id: 'recent',
       title: 'Recent Activity',
-      value: `${insights.recentOrders} orders`,
+      value: insights.recentOrders,
       subtitle: 'Last 7 days',
       icon: Calendar,
-      color: 'bg-blue-50 border-blue-200',
-      iconColor: 'text-blue-600',
-      iconBg: 'bg-blue-100'
+      trend: +12
     },
     {
+      id: 'revenue',
       title: 'Monthly Revenue',
-      value: `$${insights.last30DaysRevenue.toFixed(2)}`,
+      value: `$${insights.last30DaysRevenue.toFixed(0)}`,
       subtitle: insights.revenueGrowth !== 0 
         ? `${insights.revenueGrowth > 0 ? '+' : ''}${insights.revenueGrowth.toFixed(1)}% from last month`
         : 'No previous data',
       icon: DollarSign,
-      color: 'bg-green-50 border-green-200',
-      iconColor: insights.revenueGrowth >= 0 ? 'text-green-600' : 'text-red-600',
-      iconBg: insights.revenueGrowth >= 0 ? 'bg-green-100' : 'bg-red-100',
-      trend: insights.revenueGrowth >= 0
+      trend: insights.revenueGrowth
     },
     {
-      title: 'Active Orders Value',
-      value: `$${insights.activeOrdersValue.toFixed(2)}`,
-      subtitle: `${insights.activeOrders} orders in progress`,
+      id: 'active',
+      title: 'Active Value',
+      value: `$${insights.activeOrdersValue.toFixed(0)}`,
+      subtitle: `${insights.activeOrders} in progress`,
       icon: Package2,
-      color: 'bg-purple-50 border-purple-200',
-      iconColor: 'text-purple-600',
-      iconBg: 'bg-purple-100'
+      trend: +8
     },
     {
-      title: 'Avg Processing Time',
-      value: `${Math.round(insights.avgProcessingTime)} days`,
-      subtitle: 'For completed orders',
+      id: 'time',
+      title: 'Avg Time',
+      value: `${Math.round(insights.avgProcessingTime)}d`,
+      subtitle: 'Processing time',
       icon: Clock,
-      color: 'bg-orange-50 border-orange-200',
-      iconColor: 'text-orange-600',
-      iconBg: 'bg-orange-100'
+      trend: -2
     },
     {
+      id: 'material',
       title: 'Top Material',
       value: insights.mostPopularMaterial,
-      subtitle: 'Most frequently used',
+      subtitle: 'Most used',
       icon: Zap,
-      color: 'bg-yellow-50 border-yellow-200',
-      iconColor: 'text-yellow-600',
-      iconBg: 'bg-yellow-100'
+      trend: null
     },
     {
+      id: 'priority',
       title: 'High Priority',
       value: insights.highPriorityOrders,
-      subtitle: 'Urgent orders pending',
+      subtitle: 'Urgent orders',
       icon: AlertCircle,
-      color: insights.highPriorityOrders > 0 
-        ? 'bg-red-50 border-red-200' 
-        : 'bg-gray-50 border-gray-200',
-      iconColor: insights.highPriorityOrders > 0 ? 'text-red-600' : 'text-gray-600',
-      iconBg: insights.highPriorityOrders > 0 ? 'bg-red-100' : 'bg-gray-100'
+      trend: null,
+      alert: insights.highPriorityOrders > 0
     }
   ];
 
@@ -177,117 +169,182 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Insights Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="space-y-8">
+      {/* Insight Cards Grid */}
+      <motion.div
+        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         {insightCards.map((card, index) => {
           const Icon = card.icon;
           return (
-            <Card key={index} className={`${card.color} border transition-all hover:shadow-md`}>
-              <CardContent className="p-5">
-                <div className="flex items-start justify-between mb-3">
-                  <div className={`p-2.5 rounded-lg ${card.iconBg}`}>
-                    <Icon className={`w-5 h-5 ${card.iconColor}`} />
+            <motion.div
+              key={card.id}
+              className={`relative p-4 rounded-lg border transition-all duration-200 cursor-pointer ${
+                hoveredInsight === card.id
+                  ? 'border-gray-300 bg-gray-50'
+                  : 'border-gray-200 hover:border-gray-300'
+              } ${card.alert ? 'border-red-200 bg-red-50' : ''}`}
+              onMouseEnter={() => setHoveredInsight(card.id)}
+              onMouseLeave={() => setHoveredInsight(null)}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+              whileHover={{ y: -2 }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                  card.alert ? 'bg-red-100' : 'bg-gray-100'
+                }`}>
+                  <Icon className={`w-4 h-4 ${card.alert ? 'text-red-600' : 'text-gray-600'}`} />
+                </div>
+                {card.trend !== null && (
+                  <div className={`ml-auto flex items-center text-xs ${
+                    card.trend > 0 ? 'text-green-600' : card.trend < 0 ? 'text-red-600' : 'text-gray-500'
+                  }`}>
+                    {card.trend > 0 ? (
+                      <ChevronUp className="w-3 h-3" />
+                    ) : card.trend < 0 ? (
+                      <ChevronDown className="w-3 h-3" />
+                    ) : null}
+                    {card.trend !== 0 && `${Math.abs(card.trend).toFixed(0)}%`}
                   </div>
-                  {card.trend !== undefined && (
-                    <div className={`flex items-center gap-1 ${card.trend ? 'text-green-600' : 'text-red-600'}`}>
-                      <TrendingUp className={`w-4 h-4 ${!card.trend ? 'rotate-180' : ''}`} />
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">{card.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 mb-1">{card.value}</p>
-                  <p className="text-xs text-gray-500">{card.subtitle}</p>
-                </div>
-              </CardContent>
-            </Card>
+                )}
+              </div>
+              <div>
+                <p className="text-xs font-medium text-gray-600 mb-1">{card.title}</p>
+                <p className={`text-xl font-bold mb-1 ${
+                  card.alert ? 'text-red-900' : 'text-gray-900'
+                } ${typeof card.value === 'string' && card.value.length > 10 ? 'text-sm' : ''}`}>
+                  {card.value}
+                </p>
+                <p className="text-xs text-gray-500">{card.subtitle}</p>
+              </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Alerts Section */}
       {(insights.overdueOrders > 0 || insights.highPriorityOrders > 0) && (
-        <Card className="border-l-4 border-l-orange-500 bg-orange-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-orange-900">
-              <AlertCircle className="w-5 h-5" />
-              Attention Required
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {insights.overdueOrders > 0 && (
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-orange-600" />
-                    <span className="text-sm font-medium text-gray-700">
-                      Overdue Orders
-                    </span>
-                  </div>
-                  <span className="font-bold text-orange-600">
-                    {insights.overdueOrders}
-                  </span>
-                </div>
-              )}
-              {insights.highPriorityOrders > 0 && (
-                <div className="flex items-center justify-between p-3 bg-white rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-red-600" />
-                    <span className="text-sm font-medium text-gray-700">
-                      High Priority Orders
-                    </span>
-                  </div>
-                  <span className="font-bold text-red-600">
-                    {insights.highPriorityOrders}
-                  </span>
-                </div>
-              )}
+        <motion.div
+          className="border-l-2 border-l-red-500 bg-red-50 rounded-lg p-4"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-red-600" />
+              <h4 className="font-medium text-red-900">Attention Required</h4>
             </div>
-          </CardContent>
-        </Card>
+            <button
+              onClick={() => setExpandedAlert(!expandedAlert)}
+              className="p-1 hover:bg-red-100 rounded transition-colors"
+            >
+              <MoreHorizontal className="w-4 h-4 text-red-600" />
+            </button>
+          </div>
+          <div className="space-y-2">
+            {insights.overdueOrders > 0 && (
+              <motion.div 
+                className="flex items-center justify-between p-2 bg-white rounded-lg"
+                whileHover={{ x: 4 }}
+              >
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-orange-600" />
+                  <span className="text-sm font-medium text-gray-700">Overdue Orders</span>
+                </div>
+                <span className="font-bold text-orange-600">{insights.overdueOrders}</span>
+              </motion.div>
+            )}
+            {insights.highPriorityOrders > 0 && (
+              <motion.div 
+                className="flex items-center justify-between p-2 bg-white rounded-lg"
+                whileHover={{ x: 4 }}
+              >
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-600" />
+                  <span className="text-sm font-medium text-gray-700">High Priority</span>
+                </div>
+                <span className="font-bold text-red-600">{insights.highPriorityOrders}</span>
+              </motion.div>
+            )}
+          </div>
+          {expandedAlert && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, marginTop: 0 }}
+              animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
+              className="pt-3 border-t border-red-200"
+            >
+              <p className="text-sm text-red-800">
+                Review these orders to ensure timely delivery and customer satisfaction.
+              </p>
+            </motion.div>
+          )}
+        </motion.div>
       )}
 
       {/* Performance Overview */}
-      <Card className="shadow-md">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CheckCircle2 className="w-5 h-5 text-green-600" />
-            Performance Overview
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">Completion Rate</span>
-                <span className="text-sm font-bold text-gray-900">
-                  {insights.completionRate.toFixed(1)}%
-                </span>
-              </div>
-              <Progress value={insights.completionRate} className="h-2" />
+      <motion.div
+        className="border-b border-gray-100 pb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-medium text-gray-900">Performance Overview</h3>
+          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+            <MoreHorizontal className="w-4 h-4 text-gray-400" />
+          </button>
+        </div>
+        <div className="space-y-6">
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">Completion Rate</span>
+              <span className="text-sm font-bold text-gray-900">
+                {insights.completionRate.toFixed(1)}%
+              </span>
             </div>
-            
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t">
-              <div className="text-center">
-                <p className="text-2xl font-bold text-blue-600">{insights.activeOrders}</p>
-                <p className="text-xs text-gray-600 mt-1">Active</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-green-600">{insights.completedOrders}</p>
-                <p className="text-xs text-gray-600 mt-1">Completed</p>
-              </div>
-              <div className="text-center">
-                <p className="text-2xl font-bold text-orange-600">{insights.overdueOrders}</p>
-                <p className="text-xs text-gray-600 mt-1">Overdue</p>
-              </div>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <motion.div
+                className="h-2 rounded-full bg-gray-900"
+                initial={{ width: 0 }}
+                animate={{ width: `${insights.completionRate}%` }}
+                transition={{ duration: 0.8 }}
+              />
             </div>
           </div>
-        </CardContent>
-      </Card>
+          
+          <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-100">
+            <motion.div 
+              className="text-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+            >
+              <p className="text-2xl font-bold text-blue-600">{insights.activeOrders}</p>
+              <p className="text-xs text-gray-600 mt-1">Active Orders</p>
+            </motion.div>
+            <motion.div 
+              className="text-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+            >
+              <p className="text-2xl font-bold text-green-600">{insights.completedOrders}</p>
+              <p className="text-xs text-gray-600 mt-1">Completed</p>
+            </motion.div>
+            <motion.div 
+              className="text-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+            >
+              <p className="text-2xl font-bold text-orange-600">{insights.overdueOrders}</p>
+              <p className="text-xs text-gray-600 mt-1">Overdue</p>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
 
 export default DashboardInsights;
-
