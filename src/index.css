@@ -3,6 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Add padding to account for fixed navbar */
+body {
+  padding-top: 5rem; /* 80px - accounts for navbar height + top margin */
+}
+
+@media (min-width: 640px) {
+  body {
+    padding-top: 5.5rem; /* 88px - accounts for larger navbar on sm screens */
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
