@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
-import Services from "./pages/Services";
+import ServicesAndMaterials from "./pages/ServicesAndMaterials";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Quote from "./pages/Quote";
@@ -15,7 +15,6 @@ import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
 import Login from "./pages/Login";
 import Pricing from "./pages/Pricing";
-import Materials from "./pages/Materials";
 import Production from "./pages/Production";
 import Partners from "./pages/Partners";
 import VendorDashboard from "./pages/VendorDashboard";
@@ -40,13 +39,13 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/services" element={<Services />} />
+            <Route path="/services" element={<ServicesAndMaterials />} />
+            <Route path="/materials" element={<ServicesAndMaterials />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/quote" element={<Quote />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/materials" element={<Materials />} />
             <Route path="/production" element={<Production />} />
             <Route path="/partners" element={<Partners />} />
             <Route path="/auth" element={<Auth />} />

@@ -166,12 +166,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
             <Button variant="ghost" size="sm" asChild>
               <Link to="/services" className="hover:bg-[hsl(var(--primary))]/10 text-gray-700 hover:text-[hsl(var(--primary))]">
-                Service Dictionary
-              </Link>
-            </Button>
-            <Button variant="ghost" size="sm" asChild>
-              <Link to="/materials" className="hover:bg-[hsl(var(--primary))]/10 text-gray-700 hover:text-[hsl(var(--primary))]">
-                Material Guide
+                Services & Materials
               </Link>
             </Button>
             <Button variant="ghost" size="sm" asChild>

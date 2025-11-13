@@ -69,8 +69,7 @@ const Footer = () => {
           >
             <h3 className="font-bold text-foreground mb-5 text-lg">Resources</h3>
             <ul className="space-y-3">
-              <li><Link to="/services" className="text-muted-foreground hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Service Dictionary</Link></li>
-              <li><Link to="/materials" className="text-muted-foreground hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Material Guide</Link></li>
+              <li><Link to="/services" className="text-muted-foreground hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Services & Materials</Link></li>
               <li><Link to="/about" className="text-muted-foreground hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> About PolyBids</Link></li>
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-2 group"><span className="group-hover:translate-x-1 transition-transform">→</span> Contact Support</Link></li>
             </ul>
