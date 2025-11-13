@@ -31,14 +31,14 @@ interface OrderDetailViewProps {
 }
 
 const statusColors = {
-  pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-  confirmed: 'bg-blue-100 text-blue-800 border-blue-200',
-  in_production: 'bg-purple-100 text-purple-800 border-purple-200',
-  quality_check: 'bg-orange-100 text-orange-800 border-orange-200',
-  shipped: 'bg-indigo-100 text-indigo-800 border-indigo-200',
-  delivered: 'bg-green-100 text-green-800 border-green-200',
-  cancelled: 'bg-red-100 text-red-800 border-red-200',
-  on_hold: 'bg-gray-100 text-gray-800 border-gray-200'
+  pending: 'bg-primary/10 text-primary border-primary/30',
+  confirmed: 'bg-primary/15 text-primary border-primary/40',
+  in_production: 'bg-primary/20 text-primary border-primary/50',
+  quality_check: 'bg-primary/25 text-primary border-primary/60',
+  shipped: 'bg-primary/30 text-primary border-primary/70',
+  delivered: 'bg-primary/35 text-primary border-primary/80',
+  cancelled: 'bg-primary/5 text-primary/70 border-primary/20',
+  on_hold: 'bg-primary/8 text-primary/60 border-primary/25'
 };
 
 const OrderDetailView: React.FC<OrderDetailViewProps> = ({ 
@@ -470,6 +470,7 @@ const OrderDetailView: React.FC<OrderDetailViewProps> = ({
 };
 
 export default OrderDetailView;
+
 
 
 

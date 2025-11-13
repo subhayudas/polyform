@@ -87,7 +87,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Card 
-                className="group cursor-pointer border-gray-200 bg-white backdrop-blur-md transition-all duration-300 hover:shadow-xl hover:shadow-[#90A955]/20 hover:border-[#90A955]/40 hover:bg-[#90A955]/5 hover:-translate-y-1"
+                className="group cursor-pointer border-gray-200 bg-white backdrop-blur-md transition-all duration-300 hover:shadow-xl hover:shadow-[hsl(var(--primary))]/20 hover:border-[hsl(var(--primary))]/40 hover:bg-[hsl(var(--primary))]/5 hover:-translate-y-1"
                 style={{
                   filter: "url(#glass-effect)",
                 }}
@@ -98,11 +98,11 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[#90A955]/10 text-[#90A955] group-hover:bg-[#90A955]/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))] group-hover:bg-[hsl(var(--primary))]/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
                         <IconComponent className="h-7 w-7" />
                       </div>
                       <div className="space-y-1">
-                        <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-[#90A955] transition-colors">
+                        <CardTitle className="text-xl font-bold text-gray-900 group-hover:text-[hsl(var(--primary))] transition-colors">
                           {feature.title}
                         </CardTitle>
                         <CardDescription className="text-sm text-gray-600">
@@ -110,7 +110,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
                         </CardDescription>
                       </div>
                     </div>
-                    <ArrowRight className={`h-5 w-5 text-gray-400 transition-all duration-300 ${isHovered ? 'translate-x-2 text-[#90A955]' : ''}`} />
+                    <ArrowRight className={`h-5 w-5 text-gray-400 transition-all duration-300 ${isHovered ? 'translate-x-2 text-[hsl(var(--primary))]' : ''}`} />
                   </div>
                 </CardHeader>
                 
@@ -119,7 +119,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
                     <div className="space-y-2.5">
                       {feature.features.map((item, idx) => (
                         <div key={idx} className="flex items-center text-sm text-gray-700">
-                          <CheckCircle className="w-4 h-4 mr-2 text-[#90A955] flex-shrink-0" />
+                          <CheckCircle className="w-4 h-4 mr-2 text-[hsl(var(--primary))] flex-shrink-0" />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -149,7 +149,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: idx * 0.05 }}
               >
-                <Badge variant="outline" className="text-xs border-gray-300 text-gray-700 bg-white backdrop-blur-sm hover:bg-[#90A955]/10 hover:border-[#90A955]/50 hover:text-[#90A955] transition-all duration-300 px-3 py-1.5">
+                <Badge variant="outline" className="text-xs border-gray-300 text-gray-700 bg-white backdrop-blur-sm hover:bg-[hsl(var(--primary))]/10 hover:border-[hsl(var(--primary))]/50 hover:text-[hsl(var(--primary))] transition-all duration-300 px-3 py-1.5">
                   {service}
                 </Badge>
               </motion.div>
@@ -158,7 +158,7 @@ const ServiceCards: React.FC<ServiceCardsProps> = ({ onServiceCardClick }) => {
         </div>
         
         <motion.button
-          className="w-full px-8 py-4 rounded-full bg-[#90A955]/10 border-2 border-[#90A955]/30 text-[#90A955] font-semibold text-sm transition-all duration-300 hover:bg-[#90A955] hover:border-[#90A955] hover:text-white cursor-pointer backdrop-blur-md group"
+          className="w-full px-8 py-4 rounded-full bg-[hsl(var(--primary))]/10 border-2 border-[hsl(var(--primary))]/30 text-[hsl(var(--primary))] font-semibold text-sm transition-all duration-300 hover:bg-[hsl(var(--primary))] hover:border-[hsl(var(--primary))] hover:text-white cursor-pointer backdrop-blur-md group"
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => navigate('/quote')}

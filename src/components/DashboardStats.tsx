@@ -27,18 +27,18 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ summary }) => {
       title: 'Total Orders',
       value: summary.totalOrders,
       icon: Package,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      iconBg: 'bg-blue-100',
+      color: 'text-primary',
+      bgColor: 'bg-primary/10',
+      iconBg: 'bg-primary/20',
       change: null,
     },
     {
       title: 'Active Orders',
       value: summary.activeOrders,
       icon: Clock,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-50',
-      iconBg: 'bg-orange-100',
+      color: 'text-primary',
+      bgColor: 'bg-primary/15',
+      iconBg: 'bg-primary/25',
       change: activeRate.toFixed(1) + '%',
       progress: activeRate,
     },
@@ -46,9 +46,9 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ summary }) => {
       title: 'Completed',
       value: summary.completedOrders,
       icon: CheckCircle,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      iconBg: 'bg-green-100',
+      color: 'text-primary',
+      bgColor: 'bg-primary/20',
+      iconBg: 'bg-primary/30',
       change: completionRate.toFixed(1) + '%',
       progress: completionRate,
     },
@@ -56,9 +56,9 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ summary }) => {
       title: 'Total Spent',
       value: `$${summary.totalSpent.toFixed(2)}`,
       icon: DollarSign,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-      iconBg: 'bg-purple-100',
+      color: 'text-primary',
+      bgColor: 'bg-primary/25',
+      iconBg: 'bg-primary/35',
       change: null,
     },
   ];
@@ -75,14 +75,14 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ summary }) => {
                   <Icon className={cn("w-6 h-6", stat.color)} />
                 </div>
                 {stat.change && (
-                  <div className="flex items-center gap-1 text-xs font-medium text-gray-600">
+                  <div className="flex items-center gap-1 text-xs font-medium text-primary/70">
                     <TrendingUp className="w-3 h-3" />
                     {stat.change}
                   </div>
                 )}
               </div>
               <div className="space-y-2">
-                <p className="text-sm font-medium text-gray-600">{stat.title}</p>
+                <p className="text-sm font-medium text-primary/70">{stat.title}</p>
                 <p className={cn("text-3xl font-bold", stat.color)}>{stat.value}</p>
                 {stat.progress !== undefined && (
                   <div className="mt-3">

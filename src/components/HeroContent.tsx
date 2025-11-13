@@ -59,8 +59,8 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
 
           <linearGradient id="hero-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#ffffff" />
-            <stop offset="30%" stopColor="#90A955" />
-            <stop offset="70%" stopColor="#90A955" />
+            <stop offset="30%" stopColor="hsl(var(--primary))" />
+            <stop offset="70%" stopColor="hsl(var(--primary))" />
             <stop offset="100%" stopColor="#ffffff" />
           </linearGradient>
         </defs>
@@ -69,7 +69,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
       {/* Animated Background Gradient */}
       <div className="absolute inset-0 -z-10 opacity-30">
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-[#90A955]/20 via-[#90A955]/15 to-[#90A955]/10 rounded-3xl blur-3xl"
+          className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary))]/20 via-[hsl(var(--primary))]/15 to-[hsl(var(--primary))]/10 rounded-3xl blur-3xl"
           animate={{
             backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
           }}
@@ -84,7 +84,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
       <div className="relative">
         {/* Badge */}
         <motion.div
-          className="inline-flex items-center px-4 py-2 rounded-full bg-[#90A955]/10 backdrop-blur-sm mb-6 relative border border-[#90A955]/20"
+          className="inline-flex items-center px-4 py-2 rounded-full bg-[hsl(var(--primary))]/10 backdrop-blur-sm mb-6 relative border border-[hsl(var(--primary))]/20"
           style={{
             filter: "url(#glass-effect)",
           }}
@@ -92,8 +92,8 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="absolute top-0 left-1 right-1 h-px bg-gradient-to-r from-transparent via-[#90A955]/30 to-transparent rounded-full" />
-          <Network className="w-4 h-4 mr-2 text-[#90A955]" />
+          <div className="absolute top-0 left-1 right-1 h-px bg-gradient-to-r from-transparent via-[hsl(var(--primary))]/30 to-transparent rounded-full" />
+          <Network className="w-4 h-4 mr-2 text-[hsl(var(--primary))]" />
           <span className="text-gray-700 text-sm font-medium relative z-10 tracking-wide">
             Manufacturing Aggregator Platform
           </span>
@@ -107,7 +107,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           
-          <span className="block font-black text-[#90A955] drop-shadow-2xl mb-2">Certified Vendors</span>
+          <span className="block font-black text-[hsl(var(--primary))] drop-shadow-2xl mb-2">Certified Vendors</span>
           <span className="block font-light text-gray-600 italic text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Intelligently</span>
         </motion.h1>
 
@@ -130,7 +130,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           transition={{ duration: 0.6, delay: 1.0 }}
         >
           <motion.button
-            className="px-12 py-5 rounded-full bg-[#90A955] text-white font-semibold text-base transition-all duration-300 hover:bg-[#90A955]/90 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-[#90A955]/50 flex items-center justify-center gap-3 group"
+            className="px-12 py-5 rounded-full bg-[hsl(var(--primary))] text-white font-semibold text-base transition-all duration-300 hover:bg-[hsl(var(--primary))]/90 cursor-pointer shadow-xl hover:shadow-2xl hover:shadow-[hsl(var(--primary))]/50 flex items-center justify-center gap-3 group"
             whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
             onClick={onUploadClick}
@@ -145,7 +145,7 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           >
             <Link 
               to="/services"
-              className="px-12 py-5 rounded-full bg-transparent border-2 border-[#90A955]/30 text-[#90A955] font-medium text-base transition-all duration-300 hover:bg-[#90A955]/10 hover:border-[#90A955]/50 hover:text-[#90A955] cursor-pointer backdrop-blur-md flex items-center justify-center gap-3 group"
+              className="px-12 py-5 rounded-full bg-transparent border-2 border-[hsl(var(--primary))]/30 text-[hsl(var(--primary))] font-medium text-base transition-all duration-300 hover:bg-[hsl(var(--primary))]/10 hover:border-[hsl(var(--primary))]/50 hover:text-[hsl(var(--primary))] cursor-pointer backdrop-blur-md flex items-center justify-center gap-3 group"
             >
               <BookOpen className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
               Learn Manufacturing
@@ -165,17 +165,17 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           </p>
           <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/services" className="hover:bg-[#90A955]/10 text-gray-700 hover:text-[#90A955]">
+              <Link to="/services" className="hover:bg-[hsl(var(--primary))]/10 text-gray-700 hover:text-[hsl(var(--primary))]">
                 Service Dictionary
               </Link>
             </Button>
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/materials" className="hover:bg-[#90A955]/10 text-gray-700 hover:text-[#90A955]">
+              <Link to="/materials" className="hover:bg-[hsl(var(--primary))]/10 text-gray-700 hover:text-[hsl(var(--primary))]">
                 Material Guide
               </Link>
             </Button>
             <Button variant="ghost" size="sm" asChild>
-              <Link to="/partners" className="hover:bg-[#90A955]/10 text-gray-700 hover:text-[#90A955]">
+              <Link to="/partners" className="hover:bg-[hsl(var(--primary))]/10 text-gray-700 hover:text-[hsl(var(--primary))]">
                 Verified Partners
               </Link>
             </Button>

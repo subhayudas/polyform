@@ -28,15 +28,15 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ orders, isLoading }) => {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-primary/35 text-primary border-primary/80';
       case 'in production':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-primary/20 text-primary border-primary/50';
       case 'quality check':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-primary/25 text-primary border-primary/60';
       case 'pending':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-primary/10 text-primary border-primary/30';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-primary/10 text-primary border-primary/30';
     }
   };
 

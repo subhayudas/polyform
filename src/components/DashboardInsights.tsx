@@ -186,7 +186,7 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
                 hoveredInsight === card.id
                   ? 'border-gray-300 bg-gray-50'
                   : 'border-gray-200 hover:border-gray-300'
-              } ${card.alert ? 'border-red-200 bg-red-50' : ''}`}
+              } ${card.alert ? 'border-primary/30 bg-primary/10' : ''}`}
               onMouseEnter={() => setHoveredInsight(card.id)}
               onMouseLeave={() => setHoveredInsight(null)}
               initial={{ opacity: 0, y: 20 }}
@@ -196,13 +196,13 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
             >
               <div className="flex items-center gap-2 mb-3">
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                  card.alert ? 'bg-red-100' : 'bg-gray-100'
+                  card.alert ? 'bg-primary/15' : 'bg-primary/10'
                 }`}>
-                  <Icon className={`w-4 h-4 ${card.alert ? 'text-red-600' : 'text-gray-600'}`} />
+                  <Icon className={`w-4 h-4 ${card.alert ? 'text-primary' : 'text-primary/70'}`} />
                 </div>
                 {card.trend !== null && (
                   <div className={`ml-auto flex items-center text-xs ${
-                    card.trend > 0 ? 'text-green-600' : card.trend < 0 ? 'text-red-600' : 'text-gray-500'
+                    card.trend > 0 ? 'text-primary' : card.trend < 0 ? 'text-primary/70' : 'text-primary/60'
                   }`}>
                     {card.trend > 0 ? (
                       <ChevronUp className="w-3 h-3" />
@@ -216,7 +216,7 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
               <div>
                 <p className="text-xs font-medium text-gray-600 mb-1">{card.title}</p>
                 <p className={`text-xl font-bold mb-1 ${
-                  card.alert ? 'text-red-900' : 'text-gray-900'
+                  card.alert ? 'text-primary' : 'text-primary'
                 } ${typeof card.value === 'string' && card.value.length > 10 ? 'text-sm' : ''}`}>
                   {card.value}
                 </p>
@@ -230,21 +230,21 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
       {/* Alerts Section */}
       {(insights.overdueOrders > 0 || insights.highPriorityOrders > 0) && (
         <motion.div
-          className="border-l-2 border-l-red-500 bg-red-50 rounded-lg p-4"
+          className="border-l-2 border-l-primary bg-primary/10 rounded-lg p-4"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-red-600" />
-              <h4 className="font-medium text-red-900">Attention Required</h4>
+              <AlertCircle className="w-5 h-5 text-primary" />
+              <h4 className="font-medium text-primary">Attention Required</h4>
             </div>
             <button
               onClick={() => setExpandedAlert(!expandedAlert)}
-              className="p-1 hover:bg-red-100 rounded transition-colors"
+              className="p-1 hover:bg-primary/15 rounded transition-colors"
             >
-              <MoreHorizontal className="w-4 h-4 text-red-600" />
+              <MoreHorizontal className="w-4 h-4 text-primary" />
             </button>
           </div>
           <div className="space-y-2">
@@ -266,10 +266,10 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
                 whileHover={{ x: 4 }}
               >
                 <div className="flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-600" />
+                  <AlertCircle className="w-4 h-4 text-primary" />
                   <span className="text-sm font-medium text-gray-700">High Priority</span>
                 </div>
-                <span className="font-bold text-red-600">{insights.highPriorityOrders}</span>
+                <span className="font-bold text-primary">{insights.highPriorityOrders}</span>
               </motion.div>
             )}
           </div>
@@ -277,9 +277,9 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
             <motion.div
               initial={{ opacity: 0, height: 0, marginTop: 0 }}
               animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
-              className="pt-3 border-t border-red-200"
+              className="pt-3 border-t border-primary/20"
             >
-              <p className="text-sm text-red-800">
+              <p className="text-sm text-primary/80">
                 Review these orders to ensure timely delivery and customer satisfaction.
               </p>
             </motion.div>
@@ -323,7 +323,7 @@ const DashboardInsights: React.FC<DashboardInsightsProps> = ({ orders }) => {
               className="text-center p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 cursor-pointer"
               whileHover={{ scale: 1.05 }}
             >
-              <p className="text-2xl font-bold text-blue-600">{insights.activeOrders}</p>
+              <p className="text-2xl font-bold text-primary">{insights.activeOrders}</p>
               <p className="text-xs text-gray-600 mt-1">Active Orders</p>
             </motion.div>
             <motion.div 

@@ -33,7 +33,7 @@ const VisualShowcase = () => {
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-[#90A955]/30 rounded-full blur-sm"
+            className="absolute w-2 h-2 bg-[hsl(var(--primary))]/30 rounded-full blur-sm"
             style={{
               left: `${20 + i * 15}%`,
               top: `${30 + (i % 3) * 20}%`,
@@ -62,9 +62,9 @@ const VisualShowcase = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#90A955]/10 backdrop-blur-md border border-[#90A955]/20 mb-8"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--primary))]/10 backdrop-blur-md border border-[hsl(var(--primary))]/20 mb-8"
         >
-          <Sparkles className="w-4 h-4 text-[#90A955]" />
+          <Sparkles className="w-4 h-4 text-[hsl(var(--primary))]" />
           <span className="text-sm font-medium text-gray-700">Next-Gen Manufacturing</span>
         </motion.div>
 
@@ -77,7 +77,7 @@ const VisualShowcase = () => {
           className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 mb-6 tracking-tight"
         >
           <span className="block">Precision Manufacturing</span>
-          <span className="block mt-3 bg-gradient-to-r from-[#90A955] via-gray-700 to-[#90A955] bg-clip-text text-transparent">
+          <span className="block mt-3 bg-gradient-to-r from-[hsl(var(--primary))] via-gray-700 to-[hsl(var(--primary))] bg-clip-text text-transparent">
             Made Simple
           </span>
         </motion.h2>
@@ -101,16 +101,16 @@ const VisualShowcase = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-wrap items-center justify-center gap-4 max-w-3xl mx-auto"
         >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#90A955]/10 backdrop-blur-md border border-[#90A955]/20">
-            <Zap className="w-4 h-4 text-[#90A955]" />
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--primary))]/10 backdrop-blur-md border border-[hsl(var(--primary))]/20">
+            <Zap className="w-4 h-4 text-[hsl(var(--primary))]" />
             <span className="text-sm text-gray-700">Instant Quotes</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#90A955]/10 backdrop-blur-md border border-[#90A955]/20">
-            <Target className="w-4 h-4 text-[#90A955]" />
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--primary))]/10 backdrop-blur-md border border-[hsl(var(--primary))]/20">
+            <Target className="w-4 h-4 text-[hsl(var(--primary))]" />
             <span className="text-sm text-gray-700">Verified Partners</span>
           </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#90A955]/10 backdrop-blur-md border border-[#90A955]/20">
-            <Sparkles className="w-4 h-4 text-[#90A955]" />
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--primary))]/10 backdrop-blur-md border border-[hsl(var(--primary))]/20">
+            <Sparkles className="w-4 h-4 text-[hsl(var(--primary))]" />
             <span className="text-sm text-gray-700">Quality Guaranteed</span>
           </div>
         </motion.div>
@@ -126,12 +126,12 @@ const VisualShowcase = () => {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          className="w-6 h-10 rounded-full border-2 border-[#90A955]/30 flex items-start justify-center p-2"
+          className="w-6 h-10 rounded-full border-2 border-[hsl(var(--primary))]/30 flex items-start justify-center p-2"
         >
           <motion.div
             animate={{ y: [0, 12, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="w-1.5 h-1.5 rounded-full bg-[#90A955]/50"
+            className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--primary))]/50"
           />
         </motion.div>
       </motion.div>

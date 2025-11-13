@@ -52,9 +52,9 @@ const StatsSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-6">
-            <Shield className="w-4 h-4 text-cyan-400" />
-            <span className="text-sm font-medium text-cyan-300">Trusted Network</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+            <Shield className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary/80">Trusted Network</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Trusted Manufacturing Network
@@ -76,7 +76,7 @@ const StatsSection = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
               >
-                <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-md border border-white/10 hover:border-cyan-400/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10">
+                <div className="relative p-8 rounded-2xl bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-md border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10">
                   {/* Icon */}
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${stat.color} mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
                     <IconComponent className="w-8 h-8 text-white" />
@@ -94,7 +94,7 @@ const StatsSection = () => {
                   </motion.div>
                   
                   {/* Label */}
-                  <div className="text-xl font-semibold text-white mb-2 group-hover:text-cyan-400 transition-colors">
+                  <div className="text-xl font-semibold text-white mb-2 group-hover:text-primary transition-colors">
                     {stat.label}
                   </div>
                   

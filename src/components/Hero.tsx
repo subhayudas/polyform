@@ -127,7 +127,7 @@ const Hero = () => {
       <VisualShowcase />
 
       {/* Vendor Partnership CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-[#90A955]/5 dark:from-slate-900 dark:via-black dark:to-slate-900">
+      <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-[hsl(var(--primary))]/5 dark:from-slate-900 dark:via-black dark:to-slate-900">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -135,9 +135,9 @@ const Hero = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#90A955]/10 border border-[#90A955]/20 mb-6">
-              <Users className="w-4 h-4 text-[#90A955]" />
-              <span className="text-sm font-medium text-[#90A955]">For Manufacturers</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[hsl(var(--primary))]/10 border border-[hsl(var(--primary))]/20 mb-6">
+              <Users className="w-4 h-4 text-[hsl(var(--primary))]" />
+              <span className="text-sm font-medium text-[hsl(var(--primary))]">For Manufacturers</span>
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
               Are You a Manufacturer?
@@ -147,7 +147,7 @@ const Hero = () => {
               Grow your business with quality leads.
             </p>
             <Link to="/partners">
-              <Button size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-all duration-200 bg-[#90A955] hover:bg-[#90A955]/90 text-white border-0 px-8 py-6 text-base">
+              <Button size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-all duration-200 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white border-0 px-8 py-6 text-base">
                 <Users className="w-5 h-5" />
                 Become a Partner
               </Button>
