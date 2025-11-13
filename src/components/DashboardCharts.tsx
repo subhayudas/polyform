@@ -24,15 +24,24 @@ interface DashboardChartsProps {
   orders: Order[];
 }
 
+// Green color variations for single color tone
+const getGreenShade = (opacity: number, lightness: number = 25) => {
+  // Base green: hsl(142, 45%, 25%) - convert to RGB for charts
+  // Using variations of the primary green color
+  const hue = 142;
+  const saturation = 45;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
 const COLORS = {
-  pending: '#f59e0b',
-  confirmed: '#3b82f6',
-  in_production: '#8b5cf6',
-  quality_check: '#ec4899',
-  shipped: '#10b981',
-  delivered: '#22c55e',
-  cancelled: '#ef4444',
-  on_hold: '#6b7280',
+  pending: getGreenShade(0.1, 30),
+  confirmed: getGreenShade(0.15, 35),
+  in_production: getGreenShade(0.2, 40),
+  quality_check: getGreenShade(0.25, 45),
+  shipped: getGreenShade(0.3, 50),
+  delivered: getGreenShade(0.35, 55),
+  cancelled: getGreenShade(0.05, 20),
+  on_hold: getGreenShade(0.08, 25),
 };
 
 const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
@@ -82,7 +91,7 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
     return Object.entries(distribution).map(([status, count]) => ({
       name: status.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
       value: count,
-      color: COLORS[status as keyof typeof COLORS] || '#6B7280',
+      color: COLORS[status as keyof typeof COLORS] || getGreenShade(0.08, 25),
     }));
   }, [orders]);
 
@@ -137,10 +146,10 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="text-sm font-medium text-gray-900">{label}</p>
+        <div className="bg-white p-3 border border-primary/20 rounded-lg shadow-lg">
+          <p className="text-sm font-medium text-primary">{label}</p>
           {payload.map((entry: any, index: number) => (
-            <p key={index} className="text-sm text-gray-600">
+            <p key={index} className="text-sm text-primary/70">
               {entry.name}: {typeof entry.value === 'number' && (entry.name.toLowerCase().includes('revenue') || entry.name.toLowerCase().includes('value'))
                 ? `$${entry.value.toFixed(2)}`
                 : Math.round(entry.value)}
@@ -155,9 +164,9 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
   const PieTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="text-sm font-medium text-gray-900">{payload[0].name}</p>
-          <p className="text-sm text-gray-600">
+        <div className="bg-white p-3 border border-primary/20 rounded-lg shadow-lg">
+          <p className="text-sm font-medium text-primary">{payload[0].name}</p>
+          <p className="text-sm text-primary/70">
             {`${payload[0].value} orders`}
           </p>
         </div>
@@ -178,10 +187,10 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <Activity className="w-12 h-12 text-primary/30 mx-auto mb-4" />
         </motion.div>
-        <h4 className="text-lg font-medium text-gray-900 mb-2">No Data Available</h4>
-        <p className="text-gray-600">Create some orders to see analytics and insights here.</p>
+        <h4 className="text-lg font-medium text-primary mb-2">No Data Available</h4>
+        <p className="text-primary/70">Create some orders to see analytics and insights here.</p>
       </motion.div>
     );
   }
@@ -199,25 +208,25 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
           className="text-center p-4 rounded-lg cursor-pointer transition-all duration-200"
           onMouseEnter={() => setHoveredMetric('revenue')}
           onMouseLeave={() => setHoveredMetric(null)}
-          whileHover={{ scale: 1.02, backgroundColor: '#f9fafb' }}
+          whileHover={{ scale: 1.02, backgroundColor: 'hsl(142, 15%, 98%)' }}
           whileTap={{ scale: 0.98 }}
         >
           <motion.div 
-            className="text-2xl font-semibold text-gray-900"
+            className="text-2xl font-semibold text-primary"
             animate={{ 
               scale: hoveredMetric === 'revenue' ? 1.1 : 1,
-              color: hoveredMetric === 'revenue' ? '#059669' : '#111827'
+              color: hoveredMetric === 'revenue' ? 'hsl(142, 45%, 25%)' : 'hsl(142, 15%, 15%)'
             }}
           >
             ${totalRevenue.toFixed(0)}
           </motion.div>
-          <div className="text-sm text-gray-500">Total Revenue</div>
+          <div className="text-sm text-primary/60">Total Revenue</div>
           <motion.div 
             className="flex items-center justify-center mt-1"
             animate={{ y: hoveredMetric === 'revenue' ? -2 : 0 }}
           >
-            <ChevronUp className="w-4 h-4 text-green-500" />
-            <span className="text-xs text-green-500">+{Math.abs(ordersGrowth).toFixed(0)}%</span>
+            <ChevronUp className="w-4 h-4 text-primary" />
+            <span className="text-xs text-primary">+{Math.abs(ordersGrowth).toFixed(0)}%</span>
           </motion.div>
         </motion.div>
 
@@ -225,25 +234,25 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
           className="text-center p-4 rounded-lg cursor-pointer transition-all duration-200"
           onMouseEnter={() => setHoveredMetric('avg')}
           onMouseLeave={() => setHoveredMetric(null)}
-          whileHover={{ scale: 1.02, backgroundColor: '#f9fafb' }}
+          whileHover={{ scale: 1.02, backgroundColor: 'hsl(142, 15%, 98%)' }}
           whileTap={{ scale: 0.98 }}
         >
           <motion.div 
-            className="text-2xl font-semibold text-gray-900"
+            className="text-2xl font-semibold text-primary"
             animate={{ 
               scale: hoveredMetric === 'avg' ? 1.1 : 1,
-              color: hoveredMetric === 'avg' ? '#2563eb' : '#111827'
+              color: hoveredMetric === 'avg' ? 'hsl(142, 45%, 25%)' : 'hsl(142, 15%, 15%)'
             }}
           >
             ${avgOrderValue.toFixed(0)}
           </motion.div>
-          <div className="text-sm text-gray-500">Avg Order Value</div>
+          <div className="text-sm text-primary/60">Avg Order Value</div>
           <motion.div 
             className="flex items-center justify-center mt-1"
             animate={{ y: hoveredMetric === 'avg' ? -2 : 0 }}
           >
-            <ChevronUp className="w-4 h-4 text-green-500" />
-            <span className="text-xs text-green-500">+5%</span>
+            <ChevronUp className="w-4 h-4 text-primary" />
+            <span className="text-xs text-primary">+5%</span>
           </motion.div>
         </motion.div>
 
@@ -251,25 +260,25 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
           className="text-center p-4 rounded-lg cursor-pointer transition-all duration-200"
           onMouseEnter={() => setHoveredMetric('completion')}
           onMouseLeave={() => setHoveredMetric(null)}
-          whileHover={{ scale: 1.02, backgroundColor: '#f9fafb' }}
+          whileHover={{ scale: 1.02, backgroundColor: 'hsl(142, 15%, 98%)' }}
           whileTap={{ scale: 0.98 }}
         >
           <motion.div 
-            className="text-2xl font-semibold text-gray-900"
+            className="text-2xl font-semibold text-primary"
             animate={{ 
               scale: hoveredMetric === 'completion' ? 1.1 : 1,
-              color: hoveredMetric === 'completion' ? '#7c3aed' : '#111827'
+              color: hoveredMetric === 'completion' ? 'hsl(142, 45%, 25%)' : 'hsl(142, 15%, 15%)'
             }}
           >
             {completionRate.toFixed(0)}%
           </motion.div>
-          <div className="text-sm text-gray-500">Completion Rate</div>
+          <div className="text-sm text-primary/60">Completion Rate</div>
           <motion.div 
             className="flex items-center justify-center mt-1"
             animate={{ y: hoveredMetric === 'completion' ? -2 : 0 }}
           >
-            <ChevronUp className="w-4 h-4 text-green-500" />
-            <span className="text-xs text-green-500">+3%</span>
+            <ChevronUp className="w-4 h-4 text-primary" />
+            <span className="text-xs text-primary">+3%</span>
           </motion.div>
         </motion.div>
 
@@ -277,25 +286,25 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
           className="text-center p-4 rounded-lg cursor-pointer transition-all duration-200"
           onMouseEnter={() => setHoveredMetric('orders')}
           onMouseLeave={() => setHoveredMetric(null)}
-          whileHover={{ scale: 1.02, backgroundColor: '#f9fafb' }}
+          whileHover={{ scale: 1.02, backgroundColor: 'hsl(142, 15%, 98%)' }}
           whileTap={{ scale: 0.98 }}
         >
           <motion.div 
-            className="text-2xl font-semibold text-gray-900"
+            className="text-2xl font-semibold text-primary"
             animate={{ 
               scale: hoveredMetric === 'orders' ? 1.1 : 1,
-              color: hoveredMetric === 'orders' ? '#f59e0b' : '#111827'
+              color: hoveredMetric === 'orders' ? 'hsl(142, 45%, 25%)' : 'hsl(142, 15%, 15%)'
             }}
           >
             {orders.length}
           </motion.div>
-          <div className="text-sm text-gray-500">Total Orders</div>
+          <div className="text-sm text-primary/60">Total Orders</div>
           <motion.div 
             className="flex items-center justify-center mt-1"
             animate={{ y: hoveredMetric === 'orders' ? -2 : 0 }}
           >
-            <ChevronUp className="w-4 h-4 text-green-500" />
-            <span className="text-xs text-green-500">+{Math.abs(ordersGrowth).toFixed(0)}%</span>
+            <ChevronUp className="w-4 h-4 text-primary" />
+            <span className="text-xs text-primary">+{Math.abs(ordersGrowth).toFixed(0)}%</span>
           </motion.div>
         </motion.div>
       </motion.div>
@@ -304,22 +313,22 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Orders Over Time */}
         <motion.div
-          className="border-b border-gray-100 pb-6"
+          className="border-b border-primary/10 pb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">Orders Progress</h3>
-            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+            <h3 className="text-lg font-medium text-primary">Orders Progress</h3>
+            <div className="flex items-center gap-1 bg-primary/10 rounded-lg p-1">
               {(['week', 'month', 'year'] as const).map((range) => (
                 <button
                   key={range}
                   onClick={() => setSelectedTimeRange(range)}
                   className={`px-3 py-1 text-sm rounded-md transition-all duration-200 ${
                     selectedTimeRange === range
-                      ? 'bg-white text-gray-900 shadow-sm'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'bg-white text-primary shadow-sm'
+                      : 'text-primary/70 hover:text-primary'
                   }`}
                 >
                   {range.charAt(0).toUpperCase() + range.slice(1)}
@@ -338,32 +347,32 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
               <AreaChart data={ordersOverTime}>
                 <defs>
                   <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#111827" stopOpacity={0.1}/>
-                    <stop offset="95%" stopColor="#111827" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="hsl(142, 45%, 25%)" stopOpacity={0.1}/>
+                    <stop offset="95%" stopColor="hsl(142, 45%, 25%)" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
                 <XAxis 
                   dataKey="month" 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: '#6b7280' }}
+                  tick={{ fontSize: 12, fill: 'hsl(142, 10%, 45%)' }}
                 />
                 <YAxis 
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: '#6b7280' }}
+                  tick={{ fontSize: 12, fill: 'hsl(142, 10%, 45%)' }}
                 />
-                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                <CartesianGrid strokeDasharray="3 3" stroke="hsl(142, 15%, 96%)" />
                 <Tooltip content={<CustomTooltip />} />
                 <Area
                   type="monotone"
                   dataKey="orders"
-                  stroke="#111827"
+                  stroke="hsl(142, 45%, 25%)"
                   strokeWidth={2}
                   fillOpacity={1}
                   fill="url(#colorOrders)"
-                  dot={{ fill: '#111827', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6, stroke: '#111827', strokeWidth: 2, fill: '#fff' }}
+                  dot={{ fill: 'hsl(142, 45%, 25%)', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, stroke: 'hsl(142, 45%, 25%)', strokeWidth: 2, fill: '#fff' }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -372,14 +381,14 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
 
         {/* Status Distribution */}
         <motion.div
-          className="border-b border-gray-100 pb-6"
+          className="border-b border-primary/10 pb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">Order Status</h3>
-            <div className="text-xs text-gray-500">Current distribution</div>
+            <h3 className="text-lg font-medium text-primary">Order Status</h3>
+            <div className="text-xs text-primary/60">Current distribution</div>
           </div>
           <div className="flex items-center gap-8">
             <div className="h-48 w-48">
@@ -412,7 +421,7 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
                 <motion.div 
                   key={item.name} 
                   className="flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all duration-200"
-                  whileHover={{ backgroundColor: '#f9fafb', x: 4 }}
+                  whileHover={{ backgroundColor: 'hsl(142, 15%, 98%)', x: 4 }}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
@@ -422,8 +431,8 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
                     style={{ backgroundColor: item.color }}
                     whileHover={{ scale: 1.2 }}
                   />
-                  <span className="text-sm text-gray-600 flex-1">{item.name}</span>
-                  <span className="text-sm font-medium text-gray-900">{item.value}</span>
+                  <span className="text-sm text-primary/70 flex-1">{item.name}</span>
+                  <span className="text-sm font-medium text-primary">{item.value}</span>
                 </motion.div>
               ))}
             </div>
@@ -439,9 +448,9 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
         transition={{ duration: 0.6, delay: 0.3 }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-gray-900">Material Performance</h3>
-          <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <MoreHorizontal className="w-4 h-4 text-gray-400" />
+          <h3 className="text-lg font-medium text-primary">Material Performance</h3>
+          <button className="p-2 hover:bg-primary/10 rounded-lg transition-colors">
+            <MoreHorizontal className="w-4 h-4 text-primary/50" />
           </button>
         </div>
         <div className="h-64">
@@ -465,7 +474,7 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
               <Tooltip content={<CustomTooltip />} />
               <Bar 
                 dataKey="count" 
-                fill="#374151" 
+                fill="hsl(142, 15%, 30%)" 
                 radius={[4, 4, 0, 0]}
                 name="Quantity"
               />
@@ -483,8 +492,8 @@ const DashboardCharts: React.FC<DashboardChartsProps> = ({ orders }) => {
       >
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h3 className="text-lg font-medium text-gray-900">Revenue Trends</h3>
-            <p className="text-sm text-gray-500 mt-1">Track your revenue performance over time</p>
+            <h3 className="text-lg font-medium text-primary">Revenue Trends</h3>
+            <p className="text-sm text-primary/60 mt-1">Track your revenue performance over time</p>
           </div>
         </div>
         <div className="h-72">

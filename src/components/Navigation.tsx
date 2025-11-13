@@ -65,15 +65,15 @@ const Navigation = () => {
   ];
 
   return (
-    <nav className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl fixed z-50 top-4 left-4 right-4 rounded-2xl border border-white/20 dark:border-slate-700/50 transition-all duration-300">
+    <nav className="bg-white/90 dark:bg-primary/10 backdrop-blur-xl shadow-xl fixed z-50 top-4 left-4 right-4 rounded-2xl border border-white/20 dark:border-primary/30 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-14 sm:h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center group">
-              <div className="w-10 h-10 bg-[#90A955] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+              <div className="w-10 h-10 bg-[hsl(var(--primary))] rounded-xl flex items-center justify-center mr-3 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
                 <span className="text-white font-bold text-lg">P</span>
               </div>
-              <span className="text-2xl font-bold text-[#90A955]">PolyForm</span>
+              <span className="text-2xl font-bold text-[hsl(var(--primary))]">PolyForm</span>
             </Link>
           </div>
 
@@ -83,7 +83,7 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-600 dark:text-gray-300 hover:text-[#90A955] dark:hover:text-[#90A955] px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg hover:bg-[#90A955]/10 dark:hover:bg-[#90A955]/20"
+                className="text-gray-600 dark:text-gray-300 hover:text-[hsl(var(--primary))] dark:hover:text-[hsl(var(--primary))] px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg hover:bg-[hsl(var(--primary))]/10 dark:hover:bg-[hsl(var(--primary))]/20"
               >
                 {item.name}
               </Link>
@@ -107,7 +107,7 @@ const Navigation = () => {
                         {userAvatarUrl && (
                           <AvatarImage src={userAvatarUrl} alt={userName} />
                         )}
-                        <AvatarFallback className="bg-[#90A955] text-white text-xs">
+                        <AvatarFallback className="bg-[hsl(var(--primary))] text-white text-xs">
                           {userName.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
@@ -122,7 +122,7 @@ const Navigation = () => {
                             {userAvatarUrl && (
                               <AvatarImage src={userAvatarUrl} alt={userName} />
                             )}
-                            <AvatarFallback className="bg-[#90A955] text-white text-xs">
+                            <AvatarFallback className="bg-[hsl(var(--primary))] text-white text-xs">
                               {userName.charAt(0).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
@@ -159,7 +159,7 @@ const Navigation = () => {
                   <Button variant="outline" className="border-gray-300 dark:border-gray-600">Sign In</Button>
                 </Link>
                 <Link to="/auth">
-                  <Button className="bg-[#90A955] hover:bg-[#90A955]/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <Button className="bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300">
                     Get Started
                   </Button>
                 </Link>
@@ -187,7 +187,7 @@ const Navigation = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-500 hover:text-[#90A955] block px-3 py-2 text-base font-medium"
+                className="text-gray-500 hover:text-[hsl(var(--primary))] block px-3 py-2 text-base font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 {item.name}
@@ -200,7 +200,7 @@ const Navigation = () => {
                     {userAvatarUrl && (
                       <AvatarImage src={userAvatarUrl} alt={userName} />
                     )}
-                    <AvatarFallback className="bg-[#90A955] text-white">
+                    <AvatarFallback className="bg-[hsl(var(--primary))] text-white">
                       {userName.charAt(0).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
@@ -211,14 +211,14 @@ const Navigation = () => {
                 </div>
                 <Link
                   to="/dashboard"
-                  className="text-gray-500 hover:text-[#90A955] block px-3 py-2 text-base font-medium"
+                  className="text-gray-500 hover:text-[hsl(var(--primary))] block px-3 py-2 text-base font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   Dashboard
                 </Link>
                 <Link
                   to="/upload"
-                  className="text-gray-500 hover:text-[#90A955] block px-3 py-2 text-base font-medium"
+                  className="text-gray-500 hover:text-[hsl(var(--primary))] block px-3 py-2 text-base font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   Upload
@@ -236,7 +236,7 @@ const Navigation = () => {
             ) : (
               <Link
                 to="/auth"
-                className="text-gray-500 hover:text-[#90A955] block px-3 py-2 text-base font-medium"
+                className="text-gray-500 hover:text-[hsl(var(--primary))] block px-3 py-2 text-base font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 Sign In

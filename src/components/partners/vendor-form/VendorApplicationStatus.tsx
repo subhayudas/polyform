@@ -138,13 +138,13 @@ const VendorApplicationStatus = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'approved':
-        return 'bg-green-100 text-green-800';
+        return 'bg-primary/35 text-primary border-primary/80';
       case 'rejected':
-        return 'bg-red-100 text-red-800';
+        return 'bg-primary/5 text-primary/70 border-primary/20';
       case 'under_review':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-primary/10 text-primary border-primary/30';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-primary/8 text-primary/60 border-primary/25';
     }
   };
 
@@ -231,9 +231,9 @@ const VendorApplicationStatus = () => {
           </div>
 
           {selectedApplication?.review_notes && (
-            <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">Review Notes</h4>
-              <p className="text-blue-800">{selectedApplication.review_notes}</p>
+            <div className="mt-4 p-4 bg-primary/10 rounded-lg">
+              <h4 className="font-medium text-primary mb-2">Review Notes</h4>
+              <p className="text-primary/80">{selectedApplication.review_notes}</p>
             </div>
           )}
         </CardContent>
@@ -254,7 +254,7 @@ const VendorApplicationStatus = () => {
                 <div
                   key={notification.id}
                   className={`p-3 rounded-lg border ${
-                    notification.read ? 'bg-gray-50' : 'bg-blue-50 border-blue-200'
+                    notification.read ? 'bg-primary/5' : 'bg-primary/10 border-primary/20'
                   }`}
                 >
                   <div className="flex items-start justify-between">

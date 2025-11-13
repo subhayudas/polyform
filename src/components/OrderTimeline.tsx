@@ -32,58 +32,58 @@ const statusConfig = {
   pending: {
     label: 'Pending',
     icon: Clock,
-    color: 'text-yellow-600',
-    bgColor: 'bg-yellow-50',
-    borderColor: 'border-yellow-200',
+    color: 'text-primary',
+    bgColor: 'bg-primary/10',
+    borderColor: 'border-primary/30',
   },
   confirmed: {
     label: 'Confirmed',
     icon: CheckCircle,
-    color: 'text-blue-600',
-    bgColor: 'bg-blue-50',
-    borderColor: 'border-blue-200',
+    color: 'text-primary',
+    bgColor: 'bg-primary/15',
+    borderColor: 'border-primary/40',
   },
   in_production: {
     label: 'In Production',
     icon: Package,
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50',
-    borderColor: 'border-purple-200',
+    color: 'text-primary',
+    bgColor: 'bg-primary/20',
+    borderColor: 'border-primary/50',
   },
   quality_check: {
     label: 'Quality Check',
     icon: AlertCircle,
-    color: 'text-orange-600',
-    bgColor: 'bg-orange-50',
-    borderColor: 'border-orange-200',
+    color: 'text-primary',
+    bgColor: 'bg-primary/25',
+    borderColor: 'border-primary/60',
   },
   shipped: {
     label: 'Shipped',
     icon: Truck,
-    color: 'text-indigo-600',
-    bgColor: 'bg-indigo-50',
-    borderColor: 'border-indigo-200',
+    color: 'text-primary',
+    bgColor: 'bg-primary/30',
+    borderColor: 'border-primary/70',
   },
   delivered: {
     label: 'Delivered',
     icon: CheckCircle2,
-    color: 'text-green-600',
-    bgColor: 'bg-green-50',
-    borderColor: 'border-green-200',
+    color: 'text-primary',
+    bgColor: 'bg-primary/35',
+    borderColor: 'border-primary/80',
   },
   cancelled: {
     label: 'Cancelled',
     icon: XCircle,
-    color: 'text-red-600',
-    bgColor: 'bg-red-50',
-    borderColor: 'border-red-200',
+    color: 'text-primary/70',
+    bgColor: 'bg-primary/5',
+    borderColor: 'border-primary/20',
   },
   on_hold: {
     label: 'On Hold',
     icon: AlertCircle,
-    color: 'text-gray-600',
-    bgColor: 'bg-gray-50',
-    borderColor: 'border-gray-200',
+    color: 'text-primary/60',
+    bgColor: 'bg-primary/8',
+    borderColor: 'border-primary/25',
   },
 };
 
@@ -130,7 +130,7 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ orderId }) => {
         <CardContent className="p-6">
           <div className="flex items-center justify-center">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-polyform-green-600"></div>
-            <span className="ml-2 text-sm text-gray-600">Loading timeline...</span>
+            <span className="ml-2 text-sm text-primary/70">Loading timeline...</span>
           </div>
         </CardContent>
       </Card>
@@ -144,7 +144,7 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ orderId }) => {
           <CardTitle className="text-lg">Order Timeline</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-gray-500 text-center py-4">
+          <p className="text-sm text-primary/60 text-center py-4">
             No status history available
           </p>
         </CardContent>
@@ -161,7 +161,7 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ orderId }) => {
         <ScrollArea className="h-[400px]">
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200" />
+            <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-primary/20" />
             
             <div className="space-y-6 pl-2">
               {history.map((item, index) => {
@@ -175,7 +175,7 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ orderId }) => {
                     <div className={cn(
                       "relative z-10 flex items-center justify-center w-8 h-8 rounded-full border-2",
                       isLatest ? config.bgColor : 'bg-white',
-                      isLatest ? config.borderColor : 'border-gray-300',
+                      isLatest ? config.borderColor : 'border-primary/20',
                       isLatest && config.color
                     )}>
                       {isLatest ? (
@@ -189,7 +189,7 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ orderId }) => {
                     <div className={cn(
                       "flex-1 pb-6 rounded-lg p-4 transition-all",
                       isLatest && config.bgColor,
-                      !isLatest && "bg-gray-50"
+                      !isLatest && "bg-primary/5"
                     )}>
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
@@ -197,24 +197,24 @@ const OrderTimeline: React.FC<OrderTimelineProps> = ({ orderId }) => {
                             {config.label}
                           </span>
                           {isLatest && (
-                            <span className="text-xs px-2 py-0.5 rounded-full bg-white text-gray-600 font-medium">
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-white text-primary font-medium">
                               Current
                             </span>
                           )}
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-primary/60">
                           {formatDate(item.created_at)}
                         </span>
                       </div>
                       
                       {item.old_status && (
-                        <p className="text-xs text-gray-600 mb-2">
+                        <p className="text-xs text-primary/70 mb-2">
                           Changed from: <span className="font-medium">{item.old_status.replace('_', ' ')}</span>
                         </p>
                       )}
                       
                       {item.change_reason && (
-                        <p className="text-sm text-gray-700 mt-2">
+                        <p className="text-sm text-primary/80 mt-2">
                           {item.change_reason}
                         </p>
                       )}
