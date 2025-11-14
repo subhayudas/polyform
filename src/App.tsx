@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import Pricing from "./pages/Pricing";
 import Production from "./pages/Production";
 import Partners from "./pages/Partners";
+import BecomePartner from "./pages/BecomePartner";
 import VendorDashboard from "./pages/VendorDashboard";
 import NotFound from "./pages/NotFound";
 import ThreeDPrinting from "./pages/3DPrinting";
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/production" element={<Production />} />
             <Route path="/partners" element={<Partners />} />
+            <Route path="/become-partner" element={<BecomePartner />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/login" element={<Login />} />
             <Route path="/3d-printing" element={<ThreeDPrinting />} />
