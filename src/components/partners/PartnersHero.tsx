@@ -28,7 +28,7 @@ const PartnersHero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/contact">
+              <Link to="/become-partner">
                 <Button className="bg-polyform-green-600 hover:bg-polyform-green-700 text-lg px-8 py-3">
                   Apply to Partner
                   <ArrowRight className="w-5 h-5 ml-2" />

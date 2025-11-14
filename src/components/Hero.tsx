@@ -146,7 +146,7 @@ const Hero = () => {
               Join our network of verified vendors and access targeted RFQs through PolyBids. 
               Grow your business with quality leads.
             </p>
-            <Link to="/partners">
+            <Link to="/become-partner">
               <Button size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-all duration-200 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white border-0 px-8 py-6 text-base">
                 <Users className="w-5 h-5" />
                 Become a Partner

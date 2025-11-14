@@ -99,6 +99,43 @@ export const useVendorSubmission = (userId?: string) => {
         }
       }
 
+      // Send email notification
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const emailResponse = await fetch(`${apiUrl}/api/vendor-application`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            companyName: data.companyName,
+            contactPerson: data.contactPerson,
+            email: data.email,
+            phone: data.phone || '',
+            businessType: data.businessType,
+            experienceYears: data.experienceYears,
+            location: data.location,
+            website: data.website || '',
+            description: data.description,
+            productionCapacity: data.productionCapacity,
+            files: files.map(f => ({ name: f.name, size: f.size, type: f.type })),
+          }),
+        });
+
+        if (!emailResponse.ok) {
+          const errorData = await emailResponse.json();
+          console.error('Email sending failed:', errorData);
+          // Don't fail the entire submission if email fails
+          toast.warning('Application submitted but email notification failed. We will still review your application.');
+        } else {
+          console.log('Email sent successfully');
+        }
+      } catch (emailError) {
+        console.error('Error sending email:', emailError);
+        // Don't fail the entire submission if email fails
+        toast.warning('Application submitted but email notification failed. We will still review your application.');
+      }
+
       toast.success('Application submitted successfully! We will review it and get back to you soon.');
       return true;
     } catch (error) {
