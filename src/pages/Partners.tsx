@@ -30,14 +30,15 @@ const Partners = () => {
               <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
                 Submit your vendor application to join our network of trusted manufacturing partners.
               </p>
-            <Link to="/become-partner">
-              <Button 
-                size="lg"
-                className="bg-polyform-green-600 hover:bg-polyform-green-700"
-              >
+            <Button 
+              asChild
+              size="lg"
+              className="bg-polyform-green-600 hover:bg-polyform-green-700"
+            >
+              <Link to="/become-partner#form" state={{ scrollToForm: true }}>
                 Start Application
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             </div>
         </div>
       </section>

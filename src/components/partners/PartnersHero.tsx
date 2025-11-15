@@ -28,12 +28,12 @@ const PartnersHero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link to="/become-partner">
-                <Button className="bg-polyform-green-600 hover:bg-polyform-green-700 text-lg px-8 py-3">
+              <Button asChild className="bg-polyform-green-600 hover:bg-polyform-green-700 text-lg px-8 py-3">
+                <Link to="/become-partner#form" state={{ scrollToForm: true }}>
                   Apply to Partner
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
               <WhatsAppButton 
                 size="lg"
                 message="Hi! I'm interested in becoming a manufacturing partner with PolyForm."

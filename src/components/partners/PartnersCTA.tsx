@@ -26,12 +26,12 @@ const PartnersCTA = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link to="/become-partner">
-            <Button variant="outline" className="bg-white text-polyform-green-600 hover:bg-gray-50 text-lg px-8 py-3 border-white">
+          <Button asChild variant="outline" className="bg-white text-polyform-green-600 hover:bg-gray-50 text-lg px-8 py-3 border-white">
+            <Link to="/become-partner#form" state={{ scrollToForm: true }}>
               Get Started
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <WhatsAppButton 
             variant="outline"
             size="lg"
