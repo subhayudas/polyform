@@ -98,7 +98,7 @@ const Navigation = () => {
     },
     { 
       name: 'Materials', 
-      href: '/services',
+      href: '/materials',
       hasDropdown: true,
       dropdownItems: [
         { name: 'Plastics & Resins', icon: Box, serviceType: 'plastics-resins' },

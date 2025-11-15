@@ -27,6 +27,20 @@ const ServicesAndMaterials = () => {
   useEffect(() => {
     if (location.pathname === '/materials') {
       setActiveTab('materials');
+      // Scroll to materials section after a short delay to ensure it's rendered
+      setTimeout(() => {
+        const materialsSection = document.getElementById('materials-section');
+        if (materialsSection) {
+          // Account for fixed navigation bar (approximately 64px height)
+          const offset = 80;
+          const elementPosition = materialsSection.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
     } else if (location.pathname === '/services') {
       setActiveTab('services');
     }
@@ -361,6 +375,7 @@ const ServicesAndMaterials = () => {
             {/* Materials Content */}
             <TabsContent value="materials" className="mt-8">
               <motion.div
+                id="materials-section"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
