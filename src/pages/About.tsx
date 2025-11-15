@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -11,6 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Users, Target, Award, Clock } from 'lucide-react';
 
 const About = () => {
+  const navigate = useNavigate();
   const stats = [
     { icon: Users, label: "Happy Clients", value: "500+" },
     { icon: Target, label: "Projects Completed", value: "2,000+" },
@@ -109,8 +111,10 @@ const About = () => {
                   prototyping to full-scale production, we're your trusted manufacturing partner.
                 </p>
               </div>
-              <Button size="lg">
-                Get Started Today
+              <Button size="lg" asChild>
+                <Link to="/quote">
+                  Get Started Today
+                </Link>
               </Button>
             </div>
             <div className="lg:order-first">
