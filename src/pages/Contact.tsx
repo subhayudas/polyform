@@ -1,5 +1,6 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -11,8 +12,61 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 const Contact = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    company: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    setTimeout(() => {
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        company: '',
+        subject: '',
+        message: ''
+      });
+      setIsSubmitting(false);
+    }, 1000);
+  };
+
+  const handleScheduleCall = () => {
+    // Navigate to contact or open calendar/scheduling
+    toast({
+      title: "Schedule a Call",
+      description: "Please contact us at +1 (555) 123-4567 to schedule a call, or email info@polyform.com",
+    });
+  };
+
+  const handleRequestQuote = () => {
+    navigate('/quote');
+  };
   const contactInfo = [
     {
       icon: MapPin,
@@ -70,45 +124,80 @@ const Contact = () => {
                   Fill out the form below and we'll get back to you within 24 hours.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" placeholder="John" />
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input 
+                        id="firstName" 
+                        placeholder="John" 
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input 
+                        id="lastName" 
+                        placeholder="Doe" 
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
                   </div>
+                  
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" placeholder="Doe" />
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="john@example.com" 
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
                   </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="company">Company (Optional)</Label>
-                  <Input id="company" placeholder="Your Company" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="subject">Subject</Label>
-                  <Input id="subject" placeholder="Project inquiry" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message</Label>
-                  <Textarea 
-                    id="message" 
-                    placeholder="Tell us about your project..."
-                    className="min-h-[120px]"
-                  />
-                </div>
-                
-                <Button size="lg" className="w-full">
-                  Send Message
-                </Button>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="company">Company (Optional)</Label>
+                    <Input 
+                      id="company" 
+                      placeholder="Your Company" 
+                      value={formData.company}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">Subject</Label>
+                    <Input 
+                      id="subject" 
+                      placeholder="Project inquiry" 
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea 
+                      id="message" 
+                      placeholder="Tell us about your project..."
+                      className="min-h-[120px]"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  
+                  <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
 
@@ -154,11 +243,21 @@ const Contact = () => {
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold">Quick Actions</h3>
                 <div className="space-y-3">
-                  <Button variant="outline" size="lg" className="w-full justify-start">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full justify-start"
+                    onClick={handleScheduleCall}
+                  >
                     <Phone className="h-4 w-4 mr-2" />
                     Schedule a Call
                   </Button>
-                  <Button variant="outline" size="lg" className="w-full justify-start">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full justify-start"
+                    onClick={handleRequestQuote}
+                  >
                     <Mail className="h-4 w-4 mr-2" />
                     Request Quote
                   </Button>

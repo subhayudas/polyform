@@ -28,16 +28,38 @@ const Footer = () => {
                 certified vendors through intelligent matching and transparent bidding.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110">
+                <a 
+                  href="https://www.linkedin.com/company/polyform" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110"
+                  aria-label="Visit our LinkedIn page"
+                >
                   <Linkedin className="w-5 h-5" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110">
+                <a 
+                  href="https://twitter.com/polyform" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110"
+                  aria-label="Visit our Twitter page"
+                >
                   <Twitter className="w-5 h-5" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110">
+                <a 
+                  href="https://www.instagram.com/polyform" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110"
+                  aria-label="Visit our Instagram page"
+                >
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110">
+                <a 
+                  href="mailto:info@polyform.com"
+                  className="w-10 h-10 rounded-lg bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary/70 dark:text-primary/60 hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110"
+                  aria-label="Send us an email"
+                >
                   <Mail className="w-5 h-5" />
                 </a>
               </div>

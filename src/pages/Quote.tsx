@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Layers3, Settings, Factory, Wrench, Upload, FileText } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
 const Quote = () => {
   const [searchParams] = useSearchParams();
@@ -100,6 +101,44 @@ const ThreeDPrintingForm = () => {
   const [surfaceFinish, setSurfaceFinish] = useState('Yes');
   const [sandingType, setSandingType] = useState('General Sanding');
   const [quantity, setQuantity] = useState(1);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      toast({
+        title: "Files uploaded!",
+        description: `${files.length} file(s) selected successfully.`,
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    setTechnology('SLA(Resin)');
+    setMaterial('9600 Resin');
+    setColor('Matte White');
+    setSurfaceFinish('Yes');
+    setSandingType('General Sanding');
+    setQuantity(1);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    toast({
+      title: "Form cleared",
+      description: "All form fields have been reset.",
+    });
+  };
+
+  const handleAddToCart = () => {
+    toast({
+      title: "Added to cart!",
+      description: "Your quote has been added to the cart.",
+    });
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -120,7 +159,19 @@ const ThreeDPrintingForm = () => {
                 Wall thickness≥1.2mm, thinnest part≥0.8mm, hole size≥1.5mm. 
                 Supported files: STL, STP, and more...
               </p>
-              <Button className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".stl,.stp,.step,.obj"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <Button 
+                className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white"
+                onClick={handleFileUpload}
+                type="button"
+              >
                 Add 3D Files
               </Button>
             </div>
@@ -286,10 +337,19 @@ const ThreeDPrintingForm = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button variant="outline" className="flex-1">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={handleDelete}
+                type="button"
+              >
                 Delete
               </Button>
-              <Button className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700">
+              <Button 
+                className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700"
+                onClick={handleAddToCart}
+                type="button"
+              >
                 Add to Cart
               </Button>
             </div>
@@ -312,6 +372,48 @@ const CNCMachiningForm = () => {
   const [threads, setThreads] = useState('No');
   const [subAssembly, setSubAssembly] = useState('No');
   const [quantity, setQuantity] = useState(1);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      toast({
+        title: "Files uploaded!",
+        description: `${files.length} file(s) selected successfully.`,
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    setMaterial('Aluminum');
+    setMaterialType('Aluminum 6061');
+    setSurfaceFinish('Yes');
+    setFinishType('Bead blasting + Anodizing');
+    setFinishColor('Natural');
+    setTolerance('ISO 2768 medium');
+    setRoughness('Ra3.2');
+    setThreads('No');
+    setSubAssembly('No');
+    setQuantity(1);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    toast({
+      title: "Form cleared",
+      description: "All form fields have been reset.",
+    });
+  };
+
+  const handleRequestQuote = () => {
+    toast({
+      title: "Quote requested!",
+      description: "We'll process your quote and get back to you shortly.",
+    });
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -331,7 +433,19 @@ const CNCMachiningForm = () => {
               <p className="text-xs text-gray-500 mb-4">
                 File types: STEP,STP,DWG,DXF,PDF,Zip,Rar. File size: &lt; 100MB.
               </p>
-              <Button className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".step,.stp,.dwg,.dxf,.pdf,.zip,.rar"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <Button 
+                className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white"
+                onClick={handleFileUpload}
+                type="button"
+              >
                 Upload 3D models
               </Button>
             </div>
@@ -584,10 +698,19 @@ const CNCMachiningForm = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button variant="outline" className="flex-1">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={handleDelete}
+                type="button"
+              >
                 Delete
               </Button>
-              <Button className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700">
+              <Button 
+                className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700"
+                onClick={handleRequestQuote}
+                type="button"
+              >
                 Request a Quote
               </Button>
             </div>
@@ -612,6 +735,7 @@ const SheetMetalForm = () => {
   const [bending, setBending] = useState('No');
   const [threading, setThreading] = useState('No');
   const [assembly, setAssembly] = useState('No');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const toggleProcess = (process: string) => {
     setProcesses(prev => 
@@ -619,6 +743,49 @@ const SheetMetalForm = () => {
         ? prev.filter(p => p !== process)
         : [...prev, process]
     );
+  };
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      toast({
+        title: "Files uploaded!",
+        description: `${files.length} file(s) selected successfully.`,
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    setMaterial('Mild Steel');
+    setMaterialType('SPCC');
+    setThickness('1.0mm');
+    setProcesses(['Laser Cutting']);
+    setSurfaceFinish('Yes');
+    setFinishType('Powder Coating');
+    setFinishColor('Black');
+    setTolerance('±0.10mm');
+    setQuantity(1);
+    setBending('No');
+    setThreading('No');
+    setAssembly('No');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    toast({
+      title: "Form cleared",
+      description: "All form fields have been reset.",
+    });
+  };
+
+  const handleRequestQuote = () => {
+    toast({
+      title: "Quote requested!",
+      description: "We'll process your quote and get back to you shortly.",
+    });
   };
 
   return (
@@ -640,7 +807,19 @@ const SheetMetalForm = () => {
                 File types: DWG, DXF, PDF, AI, CDR. File size: &lt; 100MB.
                 Min bend radius: 1x thickness. Max bend angle: 135°.
               </p>
-              <Button className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".dwg,.dxf,.pdf,.ai,.cdr"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <Button 
+                className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white"
+                onClick={handleFileUpload}
+                type="button"
+              >
                 Upload 2D drawings
               </Button>
             </div>
@@ -907,10 +1086,19 @@ const SheetMetalForm = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button variant="outline" className="flex-1">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={handleDelete}
+                type="button"
+              >
                 Delete
               </Button>
-              <Button className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700">
+              <Button 
+                className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700"
+                onClick={handleRequestQuote}
+                type="button"
+              >
                 Request a Quote
               </Button>
             </div>
@@ -933,6 +1121,7 @@ const PrototypingForm = () => {
   const [urgency, setUrgency] = useState('Standard');
   const [testing, setTesting] = useState('No');
   const [documentation, setDocumentation] = useState('Basic');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const togglePostProcess = (process: string) => {
     setPostProcessing(prev => 
@@ -940,6 +1129,47 @@ const PrototypingForm = () => {
         ? prev.filter(p => p !== process)
         : [...prev, process]
     );
+  };
+
+  const handleFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      toast({
+        title: "Files uploaded!",
+        description: `${files.length} file(s) selected successfully.`,
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    setPrototypeType('Rapid Prototyping');
+    setTechnology('3D Printing');
+    setMaterial('PLA');
+    setFinishing('Standard');
+    setPostProcessing(['Sanding']);
+    setTolerance('±0.1mm');
+    setQuantity(1);
+    setUrgency('Standard');
+    setTesting('No');
+    setDocumentation('Basic');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+    toast({
+      title: "Form cleared",
+      description: "All form fields have been reset.",
+    });
+  };
+
+  const handleRequestQuote = () => {
+    toast({
+      title: "Quote requested!",
+      description: "We'll process your quote and get back to you shortly.",
+    });
   };
 
   return (
@@ -961,7 +1191,19 @@ const PrototypingForm = () => {
                 File types: STL, STEP, STP, IGES, DWG, PDF, ZIP. File size: &lt; 500MB.
                 Include assembly drawings and material specifications.
               </p>
-              <Button className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white">
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".stl,.step,.stp,.iges,.dwg,.pdf,.zip"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <Button 
+                className="bg-polyform-green-600 hover:bg-polyform-green-700 text-white"
+                onClick={handleFileUpload}
+                type="button"
+              >
                 Upload design files
               </Button>
             </div>
@@ -1195,10 +1437,19 @@ const PrototypingForm = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-3 pt-4">
-              <Button variant="outline" className="flex-1">
+              <Button 
+                variant="outline" 
+                className="flex-1"
+                onClick={handleDelete}
+                type="button"
+              >
                 Delete
               </Button>
-              <Button className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700">
+              <Button 
+                className="flex-1 bg-polyform-green-600 hover:bg-polyform-green-700"
+                onClick={handleRequestQuote}
+                type="button"
+              >
                 Request a Quote
               </Button>
             </div>
