@@ -11,7 +11,7 @@ interface WhatsAppButtonProps {
 }
 
 const WhatsAppButton = ({ 
-  phoneNumber = "+1234567890", // Replace with your actual WhatsApp number
+  phoneNumber = "+918800155066", // WhatsApp number
   message = "Hi! I'm interested in your 3D printing services.",
   variant = 'inline',
   size = 'default'
