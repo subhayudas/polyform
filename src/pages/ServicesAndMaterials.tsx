@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ServiceCategory from '@/components/ServiceCategory';
 import MaterialsTabs from '@/components/MaterialsTabs';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import AIChatbot from '@/components/AIChatbot';
-import { Printer, Wrench, Zap, Settings, Layers, Sparkles, Package, Factory } from 'lucide-react';
+import { Printer, Wrench, Zap, Settings, Layers, Sparkles, Package, Factory, Search, Filter, TrendingUp, Clock, Award, CheckCircle2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { motion } from 'framer-motion';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
 
 const ServicesAndMaterials = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'services' | 'materials'>('services');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState<'default' | 'name' | 'popularity'>('default');
+  const [filterCategory, setFilterCategory] = useState<string>('all');
 
   // Update tab based on route
   useEffect(() => {
@@ -29,7 +37,18 @@ const ServicesAndMaterials = () => {
     setActiveTab(tab);
     // Navigate to the appropriate route
     navigate(tab === 'services' ? '/services' : '/materials', { replace: true });
+    // Reset filters when switching tabs
+    setSearchQuery('');
+    setFilterCategory('all');
   };
+
+  // Statistics data
+  const stats = [
+    { label: 'Active Services', value: '6+', icon: Factory, color: 'text-primary' },
+    { label: 'Materials Available', value: '14+', icon: Package, color: 'text-secondary' },
+    { label: 'Avg. Turnaround', value: '3-5 days', icon: Clock, color: 'text-blue-500' },
+    { label: 'Quality Rating', value: '4.9/5', icon: Award, color: 'text-yellow-500' },
+  ];
 
   const serviceCategories = [
     {
@@ -38,7 +57,9 @@ const ServicesAndMaterials = () => {
       icon: Printer,
       path: "/3d-printing",
       services: ["FDM Printing", "SLA Printing", "Multi-Material", "Post-Processing"],
-      image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=450&fit=crop"
+      video: "/3d_printing.mp4",
+      popularity: 5,
+      category: "printing"
     },
     {
       title: "CNC Machining",
@@ -46,7 +67,9 @@ const ServicesAndMaterials = () => {
       icon: Settings,
       path: "/cnc-machining",
       services: ["3-Axis Milling", "4-Axis Milling", "Turning", "Surface Finishing"],
-      image: "https://images.unsplash.com/photo-1565008576549-57569a49371d?w=800&h=450&fit=crop"
+      video: "/cnc.mp4",
+      popularity: 5,
+      category: "machining"
     },
     {
       title: "Sheet Metal Fabrication",
@@ -54,7 +77,9 @@ const ServicesAndMaterials = () => {
       icon: Layers,
       path: "/sheet-metal-fabrication",
       services: ["Laser Cutting", "Bending", "Welding", "Assembly"],
-      image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&h=450&fit=crop"
+      video: "/sheet_metal.mp4",
+      popularity: 4,
+      category: "fabrication"
     },
     {
       title: "CAD Modeling",
@@ -62,7 +87,9 @@ const ServicesAndMaterials = () => {
       icon: Wrench,
       path: "/cad-modeling",
       services: ["3D Modeling", "Technical Drawings", "Design Optimization", "Reverse Engineering"],
-      image: "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?w=800&h=450&fit=crop"
+      video: "/cad.mp4",
+      popularity: 5,
+      category: "design"
     },
     {
       title: "Laser Engraving",
@@ -70,7 +97,9 @@ const ServicesAndMaterials = () => {
       icon: Sparkles,
       path: "/laser-engraving",
       services: ["Engraving", "Etching", "Marking", "Personalization"],
-      image: "https://images.unsplash.com/photo-1562408590-e32931084e23?w=800&h=450&fit=crop"
+      video: "/laser.mp4",
+      popularity: 4,
+      category: "finishing"
     },
     {
       title: "Manufacturing Solutions",
@@ -78,9 +107,39 @@ const ServicesAndMaterials = () => {
       icon: Zap,
       path: "/manufacturing-solutions",
       services: ["Assembly", "Quality Control", "Packaging", "Logistics"],
-      image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&h=450&fit=crop"
+      video: "/manufacturing.mp4",
+      popularity: 5,
+      category: "manufacturing"
     }
   ];
+
+  // Filter and sort services
+  const filteredServices = useMemo(() => {
+    let filtered = serviceCategories;
+
+    // Filter by category
+    if (filterCategory !== 'all') {
+      filtered = filtered.filter(service => service.category === filterCategory);
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      filtered = filtered.filter(service =>
+        service.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        service.services.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+
+    // Sort
+    if (sortBy === 'name') {
+      filtered = [...filtered].sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortBy === 'popularity') {
+      filtered = [...filtered].sort((a, b) => b.popularity - a.popularity);
+    }
+
+    return filtered;
+  }, [searchQuery, sortBy, filterCategory]);
 
   const materialCategories = {
     plastics: [
@@ -115,8 +174,8 @@ const ServicesAndMaterials = () => {
       <section className="relative pt-20 pb-16 bg-gradient-to-br from-primary/10 via-background to-secondary/10 overflow-hidden">
         {/* Background decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
         </div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,17 +186,23 @@ const ServicesAndMaterials = () => {
             className="text-center space-y-6"
           >
             <div className="flex items-center justify-center gap-3 mb-4">
-              <Factory className="w-12 h-12 text-primary" />
-              <Package className="w-12 h-12 text-secondary" />
+              <motion.div
+                animate={{ rotate: [0, 10, -10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              >
+                <Factory className="w-12 h-12 text-primary" />
+              </motion.div>
+              <motion.div
+                animate={{ rotate: [0, -10, 10, 0] }}
+                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              >
+                <Package className="w-12 h-12 text-secondary" />
+              </motion.div>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
               Services & <span className="text-primary">Materials</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Comprehensive manufacturing solutions and premium materials for every project. 
-              From rapid prototyping to full-scale production, we provide the services and materials 
-              you need to transform your ideas into reality.
-            </p>
+            
           </motion.div>
         </div>
       </section>
@@ -175,32 +240,121 @@ const ServicesAndMaterials = () => {
                 transition={{ duration: 0.5 }}
                 className="space-y-12"
               >
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold mb-4">Manufacturing Services</h2>
-                  <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Professional manufacturing solutions powered by cutting-edge technology and expert craftsmanship
-                  </p>
-                </div>
                 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {serviceCategories.map((category, index) => (
+
+                {/* Search and Filter Bar */}
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
+                  className="flex flex-col md:flex-row gap-4 items-center justify-between bg-card/50 backdrop-blur-sm p-4 rounded-lg border"
+                >
+                  <div className="relative flex-1 w-full md:max-w-md">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input
+                      placeholder="Search services..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  
+                  <div className="flex gap-2 w-full md:w-auto">
+                    <Select value={filterCategory} onValueChange={setFilterCategory}>
+                      <SelectTrigger className="w-full md:w-[180px]">
+                        <Filter className="w-4 h-4 mr-2" />
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Categories</SelectItem>
+                        <SelectItem value="printing">Printing</SelectItem>
+                        <SelectItem value="machining">Machining</SelectItem>
+                        <SelectItem value="fabrication">Fabrication</SelectItem>
+                        <SelectItem value="design">Design</SelectItem>
+                        <SelectItem value="finishing">Finishing</SelectItem>
+                        <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+                      <SelectTrigger className="w-full md:w-[180px]">
+                        <TrendingUp className="w-4 h-4 mr-2" />
+                        <SelectValue placeholder="Sort by" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="default">Default</SelectItem>
+                        <SelectItem value="name">Name (A-Z)</SelectItem>
+                        <SelectItem value="popularity">Popularity</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </motion.div>
+
+                {/* Results count */}
+                {searchQuery && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-sm text-muted-foreground"
+                  >
+                    Found {filteredServices.length} service{filteredServices.length !== 1 ? 's' : ''}
+                  </motion.div>
+                )}
+                
+                <AnimatePresence mode="wait">
+                  {filteredServices.length > 0 ? (
                     <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      key="services-grid"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
-                      <ServiceCategory
-                        title={category.title}
-                        description={category.description}
-                        icon={category.icon}
-                        path={category.path}
-                        services={category.services}
-                        image={category.image}
-                      />
+                      {filteredServices.map((category, index) => (
+                        <motion.div
+                          key={category.title}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.05 }}
+                          layout
+                        >
+                          <ServiceCategory
+                            title={category.title}
+                            description={category.description}
+                            icon={category.icon}
+                            path={category.path}
+                            services={category.services}
+                            video={category.video}
+                            popularity={category.popularity}
+                          />
+                        </motion.div>
+                      ))}
                     </motion.div>
-                  ))}
-                </div>
+                  ) : (
+                    <motion.div
+                      key="no-results"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="text-center py-12"
+                    >
+                      <Search className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                      <p className="text-lg font-medium text-muted-foreground mb-2">No services found</p>
+                      <p className="text-sm text-muted-foreground">Try adjusting your search or filters</p>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setSearchQuery('');
+                          setFilterCategory('all');
+                          setSortBy('default');
+                        }}
+                        className="mt-4"
+                      >
+                        Clear Filters
+                      </Button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             </TabsContent>
             
@@ -212,54 +366,56 @@ const ServicesAndMaterials = () => {
                 transition={{ duration: 0.5 }}
                 className="space-y-12"
               >
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold mb-4">Premium Materials</h2>
-                  <p className="text-muted-foreground max-w-2xl mx-auto">
-                    Wide range of high-quality materials for every application. From prototyping to production, 
-                    we offer the right material for your specific requirements.
-                  </p>
-                </div>
+               
                 
                 <MaterialsTabs materialCategories={materialCategories} />
                 
                 {/* Additional Benefits Section */}
-                <div className="grid md:grid-cols-3 gap-8 mt-16 pt-12 border-t">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="grid md:grid-cols-3 gap-8 mt-16 pt-12 border-t"
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="text-center group"
+                  >
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                      <CheckCircle2 className="w-8 h-8 text-primary" />
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Quality Assured</h3>
                     <p className="text-muted-foreground text-sm">
                       Every material batch tested for consistency and performance
                     </p>
-                  </div>
+                  </motion.div>
                   
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="text-center group"
+                  >
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                      <Zap className="w-8 h-8 text-primary" />
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Tech Integration</h3>
                     <p className="text-muted-foreground text-sm">
                       Smart material selection based on your application needs
                     </p>
-                  </div>
+                  </motion.div>
                   
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="text-center group"
+                  >
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                      <Award className="w-8 h-8 text-primary" />
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Sustainable Choice</h3>
                     <p className="text-muted-foreground text-sm">
                       Eco-friendly options available for environmentally conscious projects
                     </p>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               </motion.div>
             </TabsContent>
           </Tabs>
