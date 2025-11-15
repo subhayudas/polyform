@@ -2,8 +2,6 @@ import React from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import AdminPanel from '@/components/AdminPanel';
-import DashboardCharts from '@/components/DashboardCharts';
-import DashboardInsights from '@/components/DashboardInsights';
 import EnhancedOrdersTable from '@/components/EnhancedOrdersTable';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import AIChatbot from '@/components/AIChatbot';
@@ -12,25 +10,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrders } from '@/hooks/useOrders';
 import { Link } from 'react-router-dom';
-import { Plus, BarChart3, TrendingUp, Package, AlertCircle } from 'lucide-react';
+import { Plus, Package, AlertCircle } from 'lucide-react';
 import CreateTestOrder from '@/components/CreateTestOrder';
 
 const Dashboard = () => {
   const { userRole, user } = useAuth();
   const { orders, isLoading, error } = useOrders();
-
-  const summary = {
-    totalOrders: orders.length,
-    activeOrders: orders.filter(order => !['delivered', 'cancelled'].includes(order.status || '')).length,
-    completedOrders: orders.filter(order => order.status === 'delivered').length,
-    totalSpent: orders.reduce((sum, order) => sum + (order.price || 0), 0)
-  };
-
-  // Calculate recent activity
-  const recentOrders = orders.slice(0, 5);
-  const avgOrderValue = orders.length > 0 
-    ? summary.totalSpent / orders.length 
-    : 0;
 
   const currentTime = new Date();
   const greeting = currentTime.getHours() < 12 ? 'Good morning' : 
@@ -75,20 +60,6 @@ const Dashboard = () => {
           {userRole === 'admin' ? (
             <>
               <AdminPanel />
-              
-              {/* Admin Analytics */}
-              {orders.length > 0 && (
-                <div className="mt-8 mb-8">
-                  <DashboardInsights orders={orders} />
-                </div>
-              )}
-
-              {/* Admin Charts */}
-              {orders.length > 0 && (
-                <div className="mt-8 mb-8">
-                  <DashboardCharts orders={orders} />
-                </div>
-              )}
 
               {/* Orders Table */}
               <div className="mt-8 border-b border-gray-100 pb-6">
@@ -107,20 +78,6 @@ const Dashboard = () => {
             </>
           ) : (
             <>
-              {/* Detailed Insights */}
-              {orders.length > 0 && (
-                <div className="mb-8">
-                  <DashboardInsights orders={orders} />
-                </div>
-              )}
-
-              {/* Analytics Charts */}
-              {orders.length > 0 && (
-                <div className="mb-8">
-                  <DashboardCharts orders={orders} />
-                </div>
-              )}
-
               {/* Orders Section */}
               <div className="border-b border-gray-100 pb-6 mb-6">
                 <div className="flex items-center justify-between mb-6">
