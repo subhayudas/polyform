@@ -146,12 +146,12 @@ const Hero = () => {
               Join our network of verified vendors and access targeted RFQs through PolyBids. 
               Grow your business with quality leads.
             </p>
-            <Link to="/become-partner">
-              <Button size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-all duration-200 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white border-0 px-8 py-6 text-base">
+            <Button asChild size="lg" className="gap-2 shadow-lg hover:shadow-xl transition-all duration-200 bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/90 text-white border-0 px-8 py-6 text-base">
+              <Link to="/become-partner#form" state={{ scrollToForm: true }}>
                 <Users className="w-5 h-5" />
                 Become a Partner
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </motion.div>
         </div>
       </section>
