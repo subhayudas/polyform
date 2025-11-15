@@ -60,7 +60,7 @@ const Contact = () => {
     // Navigate to contact or open calendar/scheduling
     toast({
       title: "Schedule a Call",
-      description: "Please contact us at +1 (555) 123-4567 to schedule a call, or email info@polyform.com",
+      description: "Please contact us at +918800155066 to schedule a call, or email info@polyform.com",
     });
   };
 
@@ -76,7 +76,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Call Us", 
-      details: ["+1 (555) 123-4567", "+1 (555) 987-6543"]
+      details: ["+918800155066"]
     },
     {
       icon: Mail,
