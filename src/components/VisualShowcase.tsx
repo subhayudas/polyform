@@ -13,7 +13,7 @@ const VisualShowcase = () => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover scale-105"
       >
-        <source src="/backgroundvideo.mp4" type="video/mp4" />
+        <source src="/cnc.mp4" type="video/mp4" />
       </video>
       
       {/* Enhanced Gradient Overlay */}
