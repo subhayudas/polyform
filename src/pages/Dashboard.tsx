@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrders } from '@/hooks/useOrders';
 import { Link } from 'react-router-dom';
-import { Plus, Package, AlertCircle } from 'lucide-react';
+import { Plus, Package, AlertCircle, Clock, CheckCircle, DollarSign } from 'lucide-react';
 import CreateTestOrder from '@/components/CreateTestOrder';
 
 const Dashboard = () => {
@@ -20,6 +20,14 @@ const Dashboard = () => {
   const currentTime = new Date();
   const greeting = currentTime.getHours() < 12 ? 'Good morning' : 
                   currentTime.getHours() < 17 ? 'Good afternoon' : 'Good evening';
+
+  // Calculate stats
+  const stats = {
+    totalOrders: orders.length,
+    activeOrders: orders.filter(order => !['delivered', 'cancelled'].includes(order.status || '')).length,
+    completedOrders: orders.filter(order => order.status === 'delivered').length,
+    totalSpent: orders.reduce((sum, order) => sum + (order.price || 0), 0)
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -57,6 +65,69 @@ const Dashboard = () => {
       <section className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
+          {/* Stats Section */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <Card className="border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Total Orders</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.totalOrders}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <Package className="w-6 h-6 text-gray-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Active Orders</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.activeOrders}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Clock className="w-6 h-6 text-blue-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">Completed</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.completedOrders}</p>
+                  </div>
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <CheckCircle className="w-6 h-6 text-green-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-gray-200">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">
+                      {userRole === 'admin' ? 'Total Revenue' : 'Total Spent'}
+                    </p>
+                    <p className="text-2xl font-bold text-gray-900">
+                      ${stats.totalSpent.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <DollarSign className="w-6 h-6 text-purple-600" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           {userRole === 'admin' ? (
             <>
               <AdminPanel />
