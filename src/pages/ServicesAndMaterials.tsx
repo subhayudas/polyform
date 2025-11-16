@@ -157,26 +157,26 @@ const ServicesAndMaterials = () => {
 
   const materialCategories = {
     plastics: [
-      { name: "ABS", properties: ["Impact resistant", "Good heat resistance", "Easy to machine"], applications: ["Automotive", "Electronics", "Toys"], image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop" },
-      { name: "Nylon", properties: ["High strength", "Chemical resistant", "Self-lubricating"], applications: ["Gears", "Bearings", "Industrial parts"], image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=200&fit=crop" },
-      { name: "PLA", properties: ["Biodegradable", "Easy to print", "Good surface finish"], applications: ["Prototypes", "Educational", "Art projects"], image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop" },
-      { name: "PETG", properties: ["Chemical resistant", "Clear options", "Food safe"], applications: ["Medical", "Food containers", "Display cases"], image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop" },
-      { name: "TPU", properties: ["Flexible", "Abrasion resistant", "Good elasticity"], applications: ["Gaskets", "Phone cases", "Athletic wear"], image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?w=300&h=200&fit=crop" },
-      { name: "Polycarbonate", properties: ["High impact", "Temperature resistant", "Optical clarity"], applications: ["Safety equipment", "Automotive", "Medical devices"], image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=300&h=200&fit=crop" }
+      { name: "ABS", properties: ["Impact resistant", "Good heat resistance", "Easy to machine"], applications: ["Automotive", "Electronics", "Toys"], video: "/abs.mp4" },
+      { name: "Nylon", properties: ["High strength", "Chemical resistant", "Self-lubricating"], applications: ["Gears", "Bearings", "Industrial parts"], video: "/nylon.mp4" },
+      { name: "PLA", properties: ["Biodegradable", "Easy to print", "Good surface finish"], applications: ["Prototypes", "Educational", "Art projects"], video: "/plastic.mp4" },
+      { name: "PETG", properties: ["Chemical resistant", "Clear options", "Food safe"], applications: ["Medical", "Food containers", "Display cases"], video: "/petg.mp4" },
+      { name: "TPU", properties: ["Flexible", "Abrasion resistant", "Good elasticity"], applications: ["Gaskets", "Phone cases", "Athletic wear"], image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=300&h=200&fit=crop&q=80" },
+      { name: "Polycarbonate", properties: ["High impact", "Temperature resistant", "Optical clarity"], applications: ["Safety equipment", "Automotive", "Medical devices"], video: "/polycarbon.mp4" }
     ],
     metals: [
-      { name: "Aluminum", properties: ["Lightweight", "Corrosion resistant", "Good conductivity"], applications: ["Aerospace", "Automotive", "Electronics"], image: "https://images.unsplash.com/photo-1487887235947-a955ef187fcc?w=300&h=200&fit=crop" },
-      { name: "Steel", properties: ["High strength", "Cost effective", "Magnetic"], applications: ["Construction", "Automotive", "Tools"], image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop" },
-      { name: "Titanium", properties: ["Biocompatible", "Corrosion resistant", "High strength-to-weight"], applications: ["Medical", "Aerospace", "Marine"], image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop" },
-      { name: "Copper", properties: ["Excellent conductivity", "Antimicrobial", "Malleable"], applications: ["Electronics", "Plumbing", "Heat exchangers"], image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=300&h=200&fit=crop" }
+      { name: "Aluminum", properties: ["Lightweight", "Corrosion resistant", "Good conductivity"], applications: ["Aerospace", "Automotive", "Electronics"], image: "https://images.unsplash.com/photo-1487887235947-a955ef187fcc?w=300&h=200&fit=crop&q=80" },
+      { name: "Steel", properties: ["High strength", "Cost effective", "Magnetic"], applications: ["Construction", "Automotive", "Tools"], image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop&q=80" },
+      { name: "Titanium", properties: ["Biocompatible", "Corrosion resistant", "High strength-to-weight"], applications: ["Medical", "Aerospace", "Marine"], image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=300&h=200&fit=crop&q=80" },
+      { name: "Copper", properties: ["Excellent conductivity", "Antimicrobial", "Malleable"], applications: ["Electronics", "Plumbing", "Heat exchangers"], image: "https://images.unsplash.com/photo-1487887235947-a955ef187fcc?w=300&h=200&fit=crop&q=80" }
     ],
     composites: [
-      { name: "Carbon Fiber Reinforced", properties: ["Ultra-lightweight", "High stiffness", "Excellent strength"], applications: ["Aerospace", "Racing", "High-performance parts"], image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=300&h=200&fit=crop" },
-      { name: "Glass-Filled Nylon", properties: ["Enhanced stiffness", "Reduced shrinkage", "Better heat resistance"], applications: ["Automotive", "Industrial", "Electrical components"], image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=300&h=200&fit=crop" }
+      { name: "Carbon Fiber Reinforced", properties: ["Ultra-lightweight", "High stiffness", "Excellent strength"], applications: ["Aerospace", "Racing", "High-performance parts"], image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop&q=80" },
+      { name: "Glass-Filled Nylon", properties: ["Enhanced stiffness", "Reduced shrinkage", "Better heat resistance"], applications: ["Automotive", "Industrial", "Electrical components"], image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop&q=80" }
     ],
     elastomers: [
-      { name: "Silicone", properties: ["Temperature stable", "Chemical inert", "Biocompatible"], applications: ["Medical", "Food grade", "Seals"], image: "https://images.unsplash.com/photo-1493397212122-2b85dda8106b?w=300&h=200&fit=crop" },
-      { name: "TPE", properties: ["Recyclable", "Chemical resistant", "Flexible"], applications: ["Consumer goods", "Automotive", "Medical devices"], image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=300&h=200&fit=crop" }
+      { name: "Silicone", properties: ["Temperature stable", "Chemical inert", "Biocompatible"], applications: ["Medical", "Food grade", "Seals"], image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=300&h=200&fit=crop&q=80" },
+      { name: "TPE", properties: ["Recyclable", "Chemical resistant", "Flexible"], applications: ["Consumer goods", "Automotive", "Medical devices"], image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=300&h=200&fit=crop&q=80" }
     ]
   };
 

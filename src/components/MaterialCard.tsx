@@ -15,6 +15,7 @@ interface Material {
   properties: string[];
   applications: string[];
   image?: string;
+  video?: string;
 }
 
 interface MaterialCardProps {
@@ -90,15 +91,26 @@ const MaterialCard = ({ material }: MaterialCardProps) => {
           </Tooltip>
         </TooltipProvider>
 
-        {/* Image Section */}
-        {material.image && (
+        {/* Media Section */}
+        {(material.video || material.image) && (
           <div className="relative overflow-hidden">
             <AspectRatio ratio={16 / 9}>
-              <img 
-                src={material.image} 
-                alt={material.name}
-                className={`w-full h-full object-cover transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}
-              />
+              {material.video ? (
+                <video
+                  src={material.video}
+                  className={`w-full h-full object-cover transition-transform duration-500 ${isHovered ? 'scale-105' : 'scale-100'}`}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                />
+              ) : (
+                <img 
+                  src={material.image as string} 
+                  alt={material.name}
+                  className={`w-full h-full object-cover transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
             </AspectRatio>
           </div>
@@ -149,13 +161,24 @@ const MaterialCard = ({ material }: MaterialCardProps) => {
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-6 mt-4">
-                      {material.image && (
+                      {(material.video || material.image) && (
                         <div className="relative h-48 rounded-lg overflow-hidden">
-                          <img 
-                            src={material.image} 
-                            alt={material.name}
-                            className="w-full h-full object-cover"
-                          />
+                          {material.video ? (
+                            <video
+                              src={material.video}
+                              className="w-full h-full object-cover"
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                            />
+                          ) : (
+                            <img 
+                              src={material.image as string} 
+                              alt={material.name}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
                         </div>
                       )}
                       <div>
@@ -251,13 +274,24 @@ const MaterialCard = ({ material }: MaterialCardProps) => {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6 mt-4">
-                  {material.image && (
+                  {(material.video || material.image) && (
                     <div className="relative h-48 rounded-lg overflow-hidden">
-                      <img 
-                        src={material.image} 
-                        alt={material.name}
-                        className="w-full h-full object-cover"
-                      />
+                      {material.video ? (
+                        <video
+                          src={material.video}
+                          className="w-full h-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                        />
+                      ) : (
+                        <img 
+                          src={material.image as string} 
+                          alt={material.name}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </div>
                   )}
                   <div>

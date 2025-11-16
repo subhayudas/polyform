@@ -14,6 +14,7 @@ interface Material {
   properties: string[];
   applications: string[];
   image?: string;
+  video?: string;
 }
 
 interface MaterialCategories {
