@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import ComingSoon from './ComingSoon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -16,6 +18,7 @@ import { Layers3, Settings, Factory, Wrench, Upload, FileText } from 'lucide-rea
 import { toast } from '@/hooks/use-toast';
 
 const Quote = () => {
+  const { user, isLoading } = useAuth();
   const [searchParams] = useSearchParams();
   const [activeService, setActiveService] = useState('3d-printing');
 
@@ -25,6 +28,11 @@ const Quote = () => {
       setActiveService(service);
     }
   }, [searchParams]);
+
+  // Show coming soon page for authenticated users in pre-launch
+  if (user && !isLoading) {
+    return <ComingSoon />;
+  }
 
   return (
     <div className="min-h-screen">

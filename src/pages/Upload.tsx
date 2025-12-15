@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import ComingSoon from './ComingSoon';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ComprehensiveUploadForm from '@/components/ComprehensiveUploadForm';
@@ -7,6 +9,14 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import AIChatbot from '@/components/AIChatbot';
 
 const Upload = () => {
+  const { user, isLoading } = useAuth();
+
+  // Show coming soon page for authenticated users in pre-launch
+  if (user && !isLoading) {
+    return <ComingSoon />;
+  }
+
+  // For non-authenticated users, show the upload page
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
