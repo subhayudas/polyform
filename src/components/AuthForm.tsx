@@ -44,7 +44,7 @@ const AuthForm = () => {
       if (error) {
         setError(error.message);
       } else {
-        navigate('/dashboard');
+        navigate('/coming-soon');
       }
     } catch (err) {
       setError('An unexpected error occurred');
@@ -85,7 +85,7 @@ const AuthForm = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: `${window.location.origin}/auth`,
+          redirectTo: `${window.location.origin}/coming-soon`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',

@@ -184,7 +184,7 @@ export const useAuth = (): AuthContextType => {
       password,
       options: {
         data: metadata,
-        emailRedirectTo: `${window.location.origin}/dashboard`
+        emailRedirectTo: `${window.location.origin}/coming-soon`
       }
     });
     

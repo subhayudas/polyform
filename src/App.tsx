@@ -27,6 +27,7 @@ import ManufacturingSolutions from "./pages/ManufacturingSolutions";
 import CNCMachining from "./pages/CNCMachining";
 import SheetMetalFabrication from "./pages/SheetMetalFabrication";
 import DatabaseSetup from "./pages/DatabaseSetup";
+import ComingSoon from "./pages/ComingSoon";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -60,10 +61,18 @@ const App = () => (
             <Route path="/sheet-metal-fabrication" element={<SheetMetalFabrication />} />
             <Route path="/database-setup" element={<DatabaseSetup />} />
             <Route 
+              path="/coming-soon" 
+              element={
+                <ProtectedRoute>
+                  <ComingSoon />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/dashboard" 
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <ComingSoon />
                 </ProtectedRoute>
               } 
             />

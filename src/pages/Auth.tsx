@@ -21,8 +21,8 @@ const Auth = () => {
   }
 
   if (user) {
-    console.log('User found, redirecting to dashboard');
-    return <Navigate to="/dashboard" replace />;
+    console.log('User found, redirecting to coming soon page');
+    return <Navigate to="/coming-soon" replace />;
   }
 
   return (
