@@ -107,8 +107,8 @@ const HeroContent = ({ onUploadClick }: HeroContentProps) => {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           
-          <span className="block font-black text-[hsl(var(--primary))] drop-shadow-2xl mb-2">Certified Vendors</span>
-          <span className="block font-light text-gray-600 italic text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Intelligently</span>
+          <span className="block font-black text-[hsl(var(--primary))] drop-shadow-2xl mb-2">AGGREGATING DIGITAL</span>
+          <span className="block font-light text-gray-600 italic text-2xl md:text-3xl lg:text-4xl xl:text-5xl">Contract Manufacturing</span>
         </motion.h1>
 
         {/* Description */}
